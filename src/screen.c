@@ -6,8 +6,19 @@
 */
 
 #include "screen.h"
+#include "colors.h"
 
-
+void pintar( unsigned char* g){
+	int c;
+	c = VIDEO_FILS * VIDEO_COLS;
+	while ( c >= 0){
+		*g = C_BG_GREEN;
+		g += 4;
+		c--;
+	}
+	
+	
+}
 
 
 

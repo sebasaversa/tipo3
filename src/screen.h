@@ -12,5 +12,7 @@
 #define VIDEO_FILS 50
 #define VIDEO_COLS 80
 
+void pintar( unsigned char* g);
+
 
 #endif  /* !__SCREEN_H__ */

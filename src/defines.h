@@ -31,6 +31,8 @@
 #define GDT_IDX_CODE_DESC_2			10
 #define GDT_IDX_DATA_DESC_1			11
 #define GDT_IDX_DATA_DESC_2			12
+#define GDT_IDX_VIDEO_DESC_1		13
+
 
 /* Offsets en la gdt */
 /* -------------------------------------------------------------------------- */

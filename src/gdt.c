@@ -87,7 +87,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-    [GDT_IDX_DATA_DESC_1] = (gdt_entry) {
+    [GDT_IDX_VIDEO_DESC_1] = (gdt_entry) {
         (unsigned short)    0x1F3F,         /* limit[0:15]  */
         (unsigned short)    0x8000,         /* base[0:15]   */
         (unsigned char)     0x000B,         /* base[23:16]  */

@@ -5,6 +5,7 @@
 
 %include "imprimir.mac"
 extern GDT_DESC 
+extern pintar
 global start
 
 
@@ -70,6 +71,9 @@ start:
     ; Establecer la base de la pila
     MOV ESP, 0x27000
     MOV EBP, ESP
+    
+    MOV EDI, FS
+    call pintar
     ; Imprimir mensaje de bienvenida
     
     ; Inicializar pantalla
