@@ -31,6 +31,7 @@ start:
     CLI
 
     ; Cambiar modo de video a 80 X 50
+    xchg bx, bx
     MOV AX, 0003h
     INT 10h ; set mode 03h
     XOR BX, BX
@@ -51,13 +52,24 @@ start:
     MOV CR0,EAX
     ; Saltar a modo protegido
     JMP (9*0x08):modoProtegido
+
+    BITS 32
+
     modoProtegido:
         ;CODIGO
         
     ; Establecer selectores de segmentos
-    
+    XOR EAX, EAX
+    MOV AX, 1011000b ;1011b == 11d (index de la GDT) | 0 (0 -> GDT / 1 -> LDT) | 00 (NIVEL DE PRIVILEGIO)
+    MOV DS, AX
+    MOV ES, AX
+    MOV GS, AX
+    MOV SS, AX
+    MOV AX, 1101000b
+    MOV FS, AX
     ; Establecer la base de la pila
-    
+    MOV ESP, 0x27000
+    MOV EBP, ESP
     ; Imprimir mensaje de bienvenida
     
     ; Inicializar pantalla
