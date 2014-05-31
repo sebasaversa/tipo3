@@ -72,7 +72,7 @@ start:
     MOV ESP, 0x27000
     MOV EBP, ESP
     
-    MOV EDI, FS
+    MOV EDI, 0xB8000
     call pintar
     ; Imprimir mensaje de bienvenida
     
