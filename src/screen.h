@@ -9,10 +9,11 @@
 #define __SCREEN_H__
 
 /* Definicion de la pantalla */
-#define VIDEO_FILS 50
-#define VIDEO_COLS 80
+#define VIDEO_FILS 50	//25
+#define VIDEO_COLS 80	//160
+#define mem_vid 0xb8000
 
-void pintar( unsigned char* g);
+void pintar();
 
 
 #endif  /* !__SCREEN_H__ */

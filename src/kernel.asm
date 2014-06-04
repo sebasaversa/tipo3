@@ -32,7 +32,6 @@ start:
     CLI
 
     ; Cambiar modo de video a 80 X 50
-    xchg bx, bx
     MOV AX, 0003h
     INT 10h ; set mode 03h
     XOR BX, BX
@@ -72,8 +71,9 @@ start:
     MOV ESP, 0x27000
     MOV EBP, ESP
     
-    MOV EDI, 0xB8000
-    call pintar
+    CALL pintar
+    ;CALL idt_inicializar
+    ;LIDT [IDT_DESC]
     ; Imprimir mensaje de bienvenida
     
     ; Inicializar pantalla
