@@ -10,7 +10,10 @@
 
 void pintar(){
 	
-	unsigned char* v = (unsigned char*) mem_vid;
+	memoria_video* vd = (memoria_video*) (0xb8000);
+
+	
+	//unsigned char* v = (unsigned char*) mem_vid;
 	
 	int f = 0;
 	int c;
@@ -18,12 +21,10 @@ void pintar(){
 		c = 0;
 		while (c < VIDEO_COLS){
 			if (c <= 50){
-				*v = C_BG_GREEN;
-				}
-			v++;
-			*v = ' ';
-			v++;
-			
+				vd->fondo = C_FG_GREEN;
+			}
+			vd->ascii = (unsigned char) 0x0;
+			vd++;	
 			c++;
 		}
 		f++;
