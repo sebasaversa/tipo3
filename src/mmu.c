@@ -8,11 +8,15 @@
 #include "mmu.h"
 
 void mmu_inicializar() {
-	mmu_entry* pd = (mmu_entry*)(0x27000)
-	mmu_entry* pt = (mmu_entry*)(0x28000)
-	/*mmu_entry aux = (mmu_entry) {
+	mmu_entry* pd = (mmu_entry*)(0x27000);
+	mmu_entry* pdAux = pd;
+	mmu_entry* pt = (mmu_entry*)(0x28000);
+	mmu_entry* ptAux = pt;
+	int mem = 0;
+	
+	mmu_entry aux = (mmu_entry) {
 
-		(unsigned int)  	0x0000, 		//base_0_15;
+		(unsigned int)  	0x00000, 		//base_0_20;
 		(unsigned char)  	0x00,   		//disp:3;
 		(unsigned char)  	0x00,   		//g:1;
 		(unsigned char)  	0x00,   		//ps:1;
@@ -23,53 +27,39 @@ void mmu_inicializar() {
 		(unsigned char)  	0x00,   		//us:1;
 		(unsigned char)  	0x01,   		//rw:1;
 		(unsigned char)  	0x00,   		//p:1;
-    };*/
+    };
+    
+    int i;
+    int j;
 	for (i = 0; i < MMU_COUNT; i++)
 	{
-		pd[i] = (mmu_entry)0;
+		*pd = aux;
+		pd++;
+	}
+	pd = pdAux;
+	
+	for (i = 0; i < 4; i++)  //este for pondria la direccion de la page table en los 4 page directory que corresponden
+	{
+		pd->base_0_20 = (int) pt;
+		pd->p = 0x01;
+		pd++;
+		pt += 0x1000;
+	}
+	pt = ptAux;
+	
+	for (i = 0; i < 3; i++)
+	{
+		for (j = 0; i < MMU_COUNT; j++)
+			{
+				*pt = aux;
+				pt->p = 0x01;
+				pt++;
+				pt->base_0_20 = mem;
+				mem += 1024;
+			}
 	}
 	
-	mmu[0]->p = 1;
-	mmu[1]->p = 1;
-	mmu[1]->base_0_15 = 0x1000;
-	muu[2]->p = 1;
-	mmu[2]->base_0_15 = 0x2000;
-	muu[3]->p = 1;
-	mmu[3]->base_0_15 = 0x3000;
 	
-	pd[0] =	(mmu_entry) {
-		(unsigned int)  	0x28000, 		//base_0_20;
-		(unsigned char)  	0x00,   		//disp:3;
-		(unsigned char)  	0x00,   		//g:1;
-		(unsigned char)  	0x00,   		//ps:1;
-		(unsigned char)  	0x00,   		//ign:1;
-		(unsigned char)  	0x00,   		//a:1;
-		(unsigned char)  	0x00,   		//pcd:1;
-		(unsigned char)  	0x00,   		//pwt:1;
-		(unsigned char)  	0x00,   		//us:1;
-		(unsigned char)  	0x01,   		//rw:1;
-		(unsigned char)  	0x01,   		//p:1;}
-	}
-
-
-mmu_entry mmu[MMU_COUNT] = {
-    /* Descriptor nulo*/
-    /* Offset = 0x00 */
-    [GDT_IDX_NULL_DESC] = (mmu_entry) {
-
-		(unsigned char) 	0x0, 			//base_15_20:4;
-		(unsigned short)  	0x0000, 		//base_0_15;
-		(unsigned char)  	0x00,   		//disp:3;
-		(unsigned char)  	0x00,   		//g:1;
-		(unsigned char)  	0x00,   		//ps:1;
-		(unsigned char)  	0x00,   		//ign:1;
-		(unsigned char)  	0x00,   		//a:1;
-		(unsigned char)  	0x00,   		//pcd:1;
-		(unsigned char)  	0x00,   		//pwt:1;
-		(unsigned char)  	0x00,   		//us:1;
-		(unsigned char)  	0x00,   		//rw:1;
-		(unsigned char)  	0x00,   		//p:1;
-    },                      
 }
 
 

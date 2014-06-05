@@ -21,6 +21,7 @@ extern game_mover
 extern game_misil
 extern game_minar
 
+extern mostrar_int
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -30,13 +31,14 @@ global _isr%1
 
 _isr%1:
 
+call mostrar_int
 .loopear:
     ; To Infinity And Beyond!!
     mov eax, 0xFFFF
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
-    jmp $
+;    jmp $
 %endmacro
 
 ;;

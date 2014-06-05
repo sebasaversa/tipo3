@@ -4,7 +4,9 @@
 ; ==============================================================================
 
 %include "imprimir.mac"
-extern GDT_DESC 
+extern GDT_DESC
+extern IDT_DESC 
+extern idt_inicializar
 extern pintar
 global start
 
@@ -72,8 +74,13 @@ start:
     MOV EBP, ESP
     
     CALL pintar
-    ;CALL idt_inicializar
-    ;LIDT [IDT_DESC]
+    LIDT [IDT_DESC]
+    CALL idt_inicializar
+
+    
+    xor eax, eax
+    xor edi, edi
+    div edi
     ; Imprimir mensaje de bienvenida
     
     ; Inicializar pantalla

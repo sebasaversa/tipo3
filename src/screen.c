@@ -31,5 +31,7 @@ void pintar(){
 	}
 }
 
-
+void mostrar_int(i){
+	//printf("¡Hola, mundo!\n");
+}
 
