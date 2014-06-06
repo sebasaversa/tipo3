@@ -77,7 +77,9 @@ start:
     CALL idt_inicializar
 	LIDT [IDT_DESC]
 	
-	
+	xor eax, eax
+	xor edi, edi
+	div edi
     ; Imprimir mensaje de bienvenida
     
     ; Inicializar pantalla

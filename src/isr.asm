@@ -34,8 +34,7 @@ mov EAX, %1
 push eax
 call mostrar_int
 pop eax
-.loopear:
-    ; To Infinity And Beyond!!
+
     mov eax, 0xFFFF
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
