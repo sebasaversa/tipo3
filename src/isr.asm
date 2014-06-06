@@ -30,8 +30,10 @@ extern mostrar_int
 global _isr%1
 
 _isr%1:
-
+mov EAX, %1
+push eax
 call mostrar_int
+pop eax
 .loopear:
     ; To Infinity And Beyond!!
     mov eax, 0xFFFF
@@ -39,6 +41,7 @@ call mostrar_int
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
 ;    jmp $
+iret
 %endmacro
 
 ;;

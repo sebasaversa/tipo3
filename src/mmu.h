@@ -25,17 +25,17 @@ typedef struct str_mmu_descriptor {
 } __attribute__((__packed__)) mmu_descriptor;
 
 typedef struct str_mmu_entry {
-    unsigned int 	base_0_20:20;
-    unsigned char   disp:3;
-    unsigned char   g:1;
-    unsigned char   ps:1;
-    unsigned char   ign:1;
-    unsigned char   a:1;
-    unsigned char   pcd:1;
-    unsigned char   pwt:1;
-    unsigned char   us:1;
-    unsigned char   rw:1;
-    unsigned char   p:1;
+		unsigned char p:1;
+		unsigned char rw:1;
+		unsigned char us:1;
+		unsigned char pwt:1;
+		unsigned char pcd:1;
+		unsigned char a:1;
+		unsigned char ign:1;
+		unsigned char ps:1;
+		unsigned char g:1;
+		unsigned char disp:3;
+		unsigned int  base_0_20;
 } __attribute__((__packed__, aligned (8))) mmu_entry;
 
 void mmu_inicializar();

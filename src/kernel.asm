@@ -74,13 +74,10 @@ start:
     MOV EBP, ESP
     
     CALL pintar
-    LIDT [IDT_DESC]
     CALL idt_inicializar
-
-    
-    xor eax, eax
-    xor edi, edi
-    div edi
+	LIDT [IDT_DESC]
+	
+	
     ; Imprimir mensaje de bienvenida
     
     ; Inicializar pantalla
