@@ -51,12 +51,21 @@ void mmu_inicializar() {
 	{
 		for (j = 0; i < MMU_COUNT; j++)
 			{
-				*pt = aux;
+				//*pt = aux;
 				pt->p = 0x01;
 				pt->base_0_20 = mem;
 				pt++;
 				mem += (unsigned int) 0x1000;
-			}
+			}	
+		ptAux += 0x1000;
+		pt = ptAux;
+	}
+	for (j = 0; i < 453; i++)
+	{
+		pt->p = 0x01;
+		pt->base_0_20 = mem;
+		pt++;
+		mem += (unsigned int) 0x1000;	
 	}
  
 }

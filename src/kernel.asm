@@ -7,6 +7,7 @@
 extern GDT_DESC
 extern IDT_DESC 
 extern idt_inicializar
+extern mmu_inicializar
 extern pintar
 global start
 
@@ -77,9 +78,12 @@ start:
     CALL idt_inicializar
 	LIDT [IDT_DESC]
 	
-	xor eax, eax
-	xor edi, edi
-	div edi
+	CALL mmu_inicializar
+	MOV EAX, 0x27000
+	MOV CR3, EAX ;cargo en CR3 la direccion del page directory
+	MOV EAX, CR0
+	OR EAX, 0x80000000 ;habilitamos paginacion
+	MOV CR0, EAX 
     ; Imprimir mensaje de bienvenida
     
     ; Inicializar pantalla

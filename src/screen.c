@@ -49,82 +49,102 @@ void mostrar_int(int error){
 		case 0:
 		{
 			imprimir("Divide Error Exception (#DE)");
+			break;
 		}
 		case 1:
 		{
 			imprimir("Debug Exception (#DB)");
+			break;
 		}
 		case 2:
 		{
 			imprimir("NMI Interrupt");
+			break;
 		}
 		case 3:
 		{
 			imprimir("Breakpoint Exception (#BP)");
+			break;
 		}
 		case 4:
 		{
 			imprimir("Overflow Exception (#OF)");
+			break;
 		}
 		case 5:
 		{
 			imprimir("BOUND Range Exceeded Exception (#BR)");
+			break;
 		}
 		case 6:
 		{
 			imprimir("Invalid Opcode Exception (#UD)");
+			break;
 		}
 		case 7:
 		{
 			imprimir("Device Not Available Exception (#NM)");
+			break;
 		}
 		case 8:
 		{
 			imprimir("Double Fault Exception (#DF)");
+			break;
 		}
 		case 9:
 		{
 			imprimir("Coprocessor Segment Overrun");
+			break;
 		}
 		case 10:
 		{
 			imprimir("Invalid TSS Exception (#TS)");
+			break;
 		}
 		case 11:
 		{
 			imprimir("Segment Not Present (#NP)");
+			break;
 		}
 		case 12:
 		{
 			imprimir("Stack Fault Exception (#SS)");
+			break;
 		}
 		case 13:
 		{
 			imprimir("General Protection Exception (#GP)");
+			break;
 		}
 		case 14:
 		{
 			imprimir("Page-Fault Exception (#PF)");
+			break;
 		}
 		case 15:
 		{
 			imprimir("");
+			break;
 		}
 		case 16:
 		{
 			imprimir("x87 FPU Floating-Point Error (#MF)");
+			break;
 		}
 		case 17:
 		{
 			imprimir("Alignment Check Exception (#AC)");
+			break;
 		}
 		case 18:
 		{
 			imprimir("Machine-Check Exception (#MC)");
+			break;
 		}
 		case 19:
 		{
 			imprimir("SIMD Floating-Point Exception (#XM)");
+			break;
 		}
 	}
 }

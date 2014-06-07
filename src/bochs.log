@@ -31,7 +31,7 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe
-00000000000i[MEM0 ] allocated memory at 0x7fca991d3010. after alignment, vector=0x7fca991d4000
+00000000000i[MEM0 ] allocated memory at 0x7f025886a010. after alignment, vector=0x7f025886b000
 00000000000i[MEM0 ] 256,00MB
 00000000000i[MEM0 ] mem block size = 0x00100000, blocks=256
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('/home/tomas/bochs-2.6.2/share/bochs/BIOS-bochs-latest')
@@ -150,63 +150,100 @@
 00000322489i[BIOS ] Shutdown flag 0
 00000323091i[BIOS ] ram_size=0x10000000
 00000323535i[BIOS ] ram_end=256MB
-00000336134i[BIOS ] Found 1 cpu(s)
-00000350321i[BIOS ] bios_table_addr: 0x000fa448 end=0x000fcc00
-00000678118i[PCI  ] i440FX PMC write to PAM register 59 (TLB Flush)
-00001006045i[P2I  ] PCI IRQ routing: PIRQA# set to 0x0b
-00001006064i[P2I  ] PCI IRQ routing: PIRQB# set to 0x09
-00001006083i[P2I  ] PCI IRQ routing: PIRQC# set to 0x0b
-00001006102i[P2I  ] PCI IRQ routing: PIRQD# set to 0x09
-00001006112i[P2I  ] write: ELCR2 = 0x0a
-00001006878i[BIOS ] PIIX3/PIIX4 init: elcr=00 0a
-00001014551i[BIOS ] PCI: bus=0 devfn=0x00: vendor_id=0x8086 device_id=0x1237 class=0x0600
-00001016821i[BIOS ] PCI: bus=0 devfn=0x08: vendor_id=0x8086 device_id=0x7000 class=0x0601
-00001018930i[BIOS ] PCI: bus=0 devfn=0x09: vendor_id=0x8086 device_id=0x7010 class=0x0101
-00001019159i[PIDE ] new BM-DMA address: 0xc000
-00001019776i[BIOS ] region 4: 0x0000c000
-00001021801i[BIOS ] PCI: bus=0 devfn=0x0b: vendor_id=0x8086 device_id=0x7113 class=0x0680
-00001022034i[ACPI ] new irq line = 11
-00001022046i[ACPI ] new irq line = 9
-00001022075i[ACPI ] new PM base address: 0xb000
-00001022089i[ACPI ] new SM base address: 0xb100
-00001022117i[PCI  ] setting SMRAM control register to 0x4a
-00001186208i[CPU0 ] Enter to System Management Mode
-00001186219i[CPU0 ] RSM: Resuming from System Management Mode
-00001350237i[PCI  ] setting SMRAM control register to 0x0a
-00001365130i[BIOS ] MP table addr=0x000fa520 MPC table addr=0x000fa450 size=0xc8
-00001366886i[BIOS ] SMBIOS table addr=0x000fa530
-00001366944i[MEM0 ] allocate_block: block=0xff used 0x2 of 0x100
-00001369081i[BIOS ] ACPI tables: RSDP addr=0x000fa650 ACPI DATA addr=0x0fff0000 size=0xf72
-00001372278i[BIOS ] Firmware waking vector 0xfff00cc
-00001374076i[PCI  ] i440FX PMC write to PAM register 59 (TLB Flush)
-00001374804i[BIOS ] bios_table_cur_addr: 0x000fa674
-00001502421i[VBIOS] VGABios $Id: vgabios.c,v 1.75 2011/10/15 14:07:21 vruppert Exp $
-00001502492i[BXVGA] VBE known Display Interface b0c0
-00001502524i[BXVGA] VBE known Display Interface b0c5
-00001505449i[VBIOS] VBE Bios $Id: vbe.c,v 1.64 2011/07/19 18:25:05 vruppert Exp $
-00014471445i[XGUI ] charmap update. Font Height is 16
-01382649340i[BIOS ] Booting from 0000:7c00
-01400446035i[XGUI ] charmap update. Font Height is 16
-01421794705i[     ] Ctrl-C detected in signal handler.
-01421794706i[XGUI ] Mouse capture off
-01421794706i[     ] dbg: Quit
-01421794706i[CPU0 ] CPU is in protected mode (active)
-01421794706i[CPU0 ] CS.mode = 32 bit
-01421794706i[CPU0 ] SS.mode = 32 bit
-01421794706i[CPU0 ] EFER   = 0x00000000
-01421794706i[CPU0 ] | EAX=000b8016  EBX=0000ffff  ECX=0000ffff  EDX=00000027
-01421794706i[CPU0 ] | ESP=00026fcc  EBP=00026fdc  ESI=000e10e1  EDI=00000000
-01421794706i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af PF cf
-01421794706i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
-01421794706i[CPU0 ] |  CS:0048( 0009| 0|  0) 00000000 2dcfffff 1 1
-01421794706i[CPU0 ] |  DS:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
-01421794706i[CPU0 ] |  SS:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
-01421794706i[CPU0 ] |  ES:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
-01421794706i[CPU0 ] |  FS:0068( 000d| 0|  0) 000b8000 00001f3f 0 1
-01421794706i[CPU0 ] |  GS:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
-01421794706i[CPU0 ] | EIP=00001f07 (00001f07)
-01421794706i[CPU0 ] | CR0=0x60000011 CR2=0x00000000
-01421794706i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
-01421794706i[CMOS ] Last time is 946681484 (Fri Dec 31 20:04:44 1999)
-01421794706i[XGUI ] Exit
-01421794706i[CTRL ] quit_sim called with exit code 0
+00000336104i[BIOS ] Found 1 cpu(s)
+00000350291i[BIOS ] bios_table_addr: 0x000fa448 end=0x000fcc00
+00000678088i[PCI  ] i440FX PMC write to PAM register 59 (TLB Flush)
+00001006015i[P2I  ] PCI IRQ routing: PIRQA# set to 0x0b
+00001006034i[P2I  ] PCI IRQ routing: PIRQB# set to 0x09
+00001006053i[P2I  ] PCI IRQ routing: PIRQC# set to 0x0b
+00001006072i[P2I  ] PCI IRQ routing: PIRQD# set to 0x09
+00001006082i[P2I  ] write: ELCR2 = 0x0a
+00001006848i[BIOS ] PIIX3/PIIX4 init: elcr=00 0a
+00001014521i[BIOS ] PCI: bus=0 devfn=0x00: vendor_id=0x8086 device_id=0x1237 class=0x0600
+00001016791i[BIOS ] PCI: bus=0 devfn=0x08: vendor_id=0x8086 device_id=0x7000 class=0x0601
+00001018900i[BIOS ] PCI: bus=0 devfn=0x09: vendor_id=0x8086 device_id=0x7010 class=0x0101
+00001019129i[PIDE ] new BM-DMA address: 0xc000
+00001019746i[BIOS ] region 4: 0x0000c000
+00001021771i[BIOS ] PCI: bus=0 devfn=0x0b: vendor_id=0x8086 device_id=0x7113 class=0x0680
+00001022004i[ACPI ] new irq line = 11
+00001022016i[ACPI ] new irq line = 9
+00001022045i[ACPI ] new PM base address: 0xb000
+00001022059i[ACPI ] new SM base address: 0xb100
+00001022087i[PCI  ] setting SMRAM control register to 0x4a
+00001186178i[CPU0 ] Enter to System Management Mode
+00001186189i[CPU0 ] RSM: Resuming from System Management Mode
+00001350207i[PCI  ] setting SMRAM control register to 0x0a
+00001365100i[BIOS ] MP table addr=0x000fa520 MPC table addr=0x000fa450 size=0xc8
+00001366856i[BIOS ] SMBIOS table addr=0x000fa530
+00001366914i[MEM0 ] allocate_block: block=0xff used 0x2 of 0x100
+00001369051i[BIOS ] ACPI tables: RSDP addr=0x000fa650 ACPI DATA addr=0x0fff0000 size=0xf72
+00001372248i[BIOS ] Firmware waking vector 0xfff00cc
+00001374046i[PCI  ] i440FX PMC write to PAM register 59 (TLB Flush)
+00001374774i[BIOS ] bios_table_cur_addr: 0x000fa674
+00001502391i[VBIOS] VGABios $Id: vgabios.c,v 1.75 2011/10/15 14:07:21 vruppert Exp $
+00001502462i[BXVGA] VBE known Display Interface b0c0
+00001502494i[BXVGA] VBE known Display Interface b0c5
+00001505419i[VBIOS] VBE Bios $Id: vbe.c,v 1.64 2011/07/19 18:25:05 vruppert Exp $
+00007178830i[XGUI ] charmap update. Font Height is 16
+02325870940i[BIOS ] Booting from 0000:7c00
+02342718580i[XGUI ] charmap update. Font Height is 16
+02343998899i[MEM0 ] allocate_block: block=0x1 used 0x3 of 0x100
+02345571763i[MEM0 ] allocate_block: block=0x2 used 0x4 of 0x100
+02347144627i[MEM0 ] allocate_block: block=0x3 used 0x5 of 0x100
+02348717491i[MEM0 ] allocate_block: block=0x4 used 0x6 of 0x100
+02350290355i[MEM0 ] allocate_block: block=0x5 used 0x7 of 0x100
+02351863219i[MEM0 ] allocate_block: block=0x6 used 0x8 of 0x100
+02353436083i[MEM0 ] allocate_block: block=0x7 used 0x9 of 0x100
+02355008947i[MEM0 ] allocate_block: block=0x8 used 0xa of 0x100
+02356581811i[MEM0 ] allocate_block: block=0x9 used 0xb of 0x100
+02358154675i[MEM0 ] allocate_block: block=0xa used 0xc of 0x100
+02359727539i[MEM0 ] allocate_block: block=0xb used 0xd of 0x100
+02361300403i[MEM0 ] allocate_block: block=0xc used 0xe of 0x100
+02362873267i[MEM0 ] allocate_block: block=0xd used 0xf of 0x100
+02364446131i[MEM0 ] allocate_block: block=0xe used 0x10 of 0x100
+02366018995i[MEM0 ] allocate_block: block=0xf used 0x11 of 0x100
+02367591859i[MEM0 ] allocate_block: block=0x10 used 0x12 of 0x100
+02369164723i[MEM0 ] allocate_block: block=0x11 used 0x13 of 0x100
+02370737587i[MEM0 ] allocate_block: block=0x12 used 0x14 of 0x100
+02372310451i[MEM0 ] allocate_block: block=0x13 used 0x15 of 0x100
+02373883315i[MEM0 ] allocate_block: block=0x14 used 0x16 of 0x100
+02375456179i[MEM0 ] allocate_block: block=0x15 used 0x17 of 0x100
+02377029043i[MEM0 ] allocate_block: block=0x16 used 0x18 of 0x100
+02378601907i[MEM0 ] allocate_block: block=0x17 used 0x19 of 0x100
+02380174771i[MEM0 ] allocate_block: block=0x18 used 0x1a of 0x100
+02381747635i[MEM0 ] allocate_block: block=0x19 used 0x1b of 0x100
+02383320499i[MEM0 ] allocate_block: block=0x1a used 0x1c of 0x100
+02384893363i[MEM0 ] allocate_block: block=0x1b used 0x1d of 0x100
+02386466227i[MEM0 ] allocate_block: block=0x1c used 0x1e of 0x100
+02388039091i[MEM0 ] allocate_block: block=0x1d used 0x1f of 0x100
+02389611955i[MEM0 ] allocate_block: block=0x1e used 0x20 of 0x100
+02391184819i[MEM0 ] allocate_block: block=0x1f used 0x21 of 0x100
+02392757683i[MEM0 ] allocate_block: block=0x20 used 0x22 of 0x100
+02394330547i[MEM0 ] allocate_block: block=0x21 used 0x23 of 0x100
+02395903411i[MEM0 ] allocate_block: block=0x22 used 0x24 of 0x100
+02397476275i[MEM0 ] allocate_block: block=0x23 used 0x25 of 0x100
+02399049139i[MEM0 ] allocate_block: block=0x24 used 0x26 of 0x100
+02400622003i[MEM0 ] allocate_block: block=0x25 used 0x27 of 0x100
+02401891171i[     ] Ctrl-C detected in signal handler.
+02401891171i[XGUI ] Mouse capture off
+02401891171i[     ] dbg: Quit
+02401891171i[CPU0 ] CPU is in protected mode (active)
+02401891171i[CPU0 ] CS.mode = 32 bit
+02401891171i[CPU0 ] SS.mode = 32 bit
+02401891171i[CPU0 ] EFER   = 0x00000000
+02401891171i[CPU0 ] | EAX=025ce920  EBX=00001112  ECX=00028ff8  EDX=b4d23000
+02401891171i[CPU0 ] | ESP=00026fc8  EBP=00026ff8  ESI=000e10e1  EDI=00002200
+02401891171i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df if tf SF zf AF pf CF
+02401891171i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
+02401891171i[CPU0 ] |  CS:0048( 0009| 0|  0) 00000000 2dcfffff 1 1
+02401891171i[CPU0 ] |  DS:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
+02401891171i[CPU0 ] |  SS:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
+02401891171i[CPU0 ] |  ES:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
+02401891171i[CPU0 ] |  FS:0068( 000d| 0|  0) 000b8000 00001f3f 0 1
+02401891171i[CPU0 ] |  GS:0058( 000b| 0|  0) 00000000 2dcfffff 1 1
+02401891171i[CPU0 ] | EIP=00001e2b (00001e2b)
+02401891171i[CPU0 ] | CR0=0x60000011 CR2=0x00000000
+02401891171i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
+02401891171i[CMOS ] Last time is 946681680 (Fri Dec 31 20:08:00 1999)
+02401891171i[XGUI ] Exit
+02401891171i[CTRL ] quit_sim called with exit code 0
