@@ -8,6 +8,7 @@ extern GDT_DESC
 extern IDT_DESC 
 extern idt_inicializar
 extern mmu_inicializar
+extern mmu_inicializar_dir_kernel
 extern pintar
 global start
 
@@ -78,7 +79,7 @@ start:
     CALL idt_inicializar
 	LIDT [IDT_DESC]
 	
-	CALL mmu_inicializar
+	CALL mmu_inicializar_dir_kernel
 	MOV EAX, 0x27000
 	MOV CR3, EAX ;cargo en CR3 la direccion del page directory
 	MOV EAX, CR0

@@ -35,11 +35,13 @@ typedef struct str_mmu_entry {
 		unsigned char ps:1;
 		unsigned char g:1;
 		unsigned char disp:3;
-		unsigned int  base_0_20;
+		unsigned int  base_0_20:20;
 } __attribute__((__packed__, aligned (8))) mmu_entry;
 
-void mmu_inicializar();
-
+void mmu_inicializar_dir_kernel();
+void mmu_inicializar_dir_tarea();
+void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attrs);
+void inicializar_mmu();
 
 #endif	/* !__MMU_H__ */
 
