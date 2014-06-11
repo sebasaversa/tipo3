@@ -17,7 +17,7 @@
 #define MMU_COUNT 1024
 
 
-unsigned int* mem_libre = (unsigned int*)0x100000;
+unsigned int* area_libre = (unsigned int*)0x100000;
 
 typedef struct str_mmu_descriptor {
     unsigned short  mmu_length;
@@ -42,6 +42,7 @@ void mmu_inicializar_dir_kernel();
 void mmu_inicializar_dir_tarea();
 void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attrs);
 void inicializar_mmu();
+void dameMemoria();
 
 #endif	/* !__MMU_H__ */
 

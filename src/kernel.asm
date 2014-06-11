@@ -10,7 +10,6 @@ extern idt_inicializar
 extern mmu_inicializar
 extern mmu_inicializar_dir_kernel
 extern pintar
-extern mem_libre
 global start
 
 
