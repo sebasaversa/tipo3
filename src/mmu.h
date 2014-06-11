@@ -14,10 +14,10 @@
 #include "game.h"
 
 
-
-
 #define MMU_COUNT 1024
 
+
+unsigned int* mem_libre = (unsigned int*)0x100000;
 
 typedef struct str_mmu_descriptor {
     unsigned short  mmu_length;
@@ -36,7 +36,7 @@ typedef struct str_mmu_entry {
 		unsigned char g:1;
 		unsigned char disp:3;
 		unsigned int  base_0_20:20;
-} __attribute__((__packed__, aligned (8))) mmu_entry;
+} __attribute__((__packed__, aligned (4))) mmu_entry;
 
 void mmu_inicializar_dir_kernel();
 void mmu_inicializar_dir_tarea();
