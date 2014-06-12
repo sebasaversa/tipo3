@@ -10,6 +10,10 @@ extern idt_inicializar
 extern mmu_inicializar
 extern mmu_inicializar_dir_kernel
 extern pintar
+extern pintarTablero
+extern deshabilitar_pic
+extern resetear_pic
+extern habilitar_pic
 global start
 
 
@@ -79,7 +83,8 @@ start:
     CALL idt_inicializar
 	LIDT [IDT_DESC]
 	
-    ;xchg bx, bx
+	CALL pintarTablero
+
 	CALL mmu_inicializar_dir_kernel
 	MOV EAX, 0x27000
 	MOV CR3, EAX ;cargo en CR3 la direccion del page directory
@@ -93,12 +98,13 @@ start:
     ; Inicializar el manejador de memoria
     
     ; Inicializar el directorio de paginas
-    ;MOV EAX, [mem_libre] ;habilitamos paginacion
     CALL mmu_inicializar
-    ; Cargar directorio de paginas
-    MOV EAX, 0x100000
-    MOV CR3, EAX
     
+    CALL deshabilitar_pic
+    CALL resetear_pic
+    CALL habilitar_pic
+    ; Cargar directorio de paginas
+   
     ; Habilitar paginacion
     
     ; Inicializar tss

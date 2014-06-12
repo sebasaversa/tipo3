@@ -9,8 +9,8 @@
 #define __SCREEN_H__
 
 /* Definicion de la pantalla */
-#define VIDEO_FILS 50	//25
-#define VIDEO_COLS 80	//160
+#define VIDEO_FILS 50	
+#define VIDEO_COLS 80	
 #define mem_vid 0xb8000
 
 typedef struct str_memoria_video {
@@ -23,6 +23,7 @@ typedef struct str_memoria_video {
 
 
 void pintar();
+void pintarTablero();
 void mostrar_int(int i);
 
 #endif  /* !__SCREEN_H__ */

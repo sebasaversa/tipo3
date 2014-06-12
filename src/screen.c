@@ -29,6 +29,41 @@ void pintar(){
 	}
 }
 
+void pintarTablero(){
+
+	memoria_video* vd = (memoria_video*) (0xb8000);
+
+	
+	int f = 0;
+	int c;
+	while(f < VIDEO_FILS ){
+		c = 0;
+		while (c < VIDEO_COLS){
+			if (c <= 50){
+				vd->fondo = C_FG_GREEN;
+			}
+			if (c >= 52)
+			{
+				if(f == 0 || f == 20)
+				{
+				vd->fondo = C_FG_RED;
+				}
+				if( 0 < f && f < 19)
+				{
+					vd->fondo = C_FG_LIGHT_GREY;
+				}
+				
+			}
+			vd->ascii = (unsigned char) 0x0;
+			vd++;	
+			c++;
+		}
+		f++;
+	}
+	
+}
+
+
 void imprimir(char* m){
 	
 	memoria_video* vd = (memoria_video*) (0xb8000);

@@ -41,6 +41,7 @@ typedef struct str_mmu_entry {
 void mmu_inicializar_dir_kernel();
 void mmu_inicializar_dir_tarea();
 void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attrs);
+void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3);
 void inicializar_mmu();
 void dameMemoria();
 

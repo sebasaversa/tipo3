@@ -84,7 +84,7 @@ void mmu_inicializar_dir_tarea(){
 	mmu_entry* pt = (mmu_entry*)(area_libre);
 	pt += 1024;
 	mmu_entry* ptAux = pt;
-	unsigned int mem = (unsigned int) 0x400000;
+	unsigned int mem = (unsigned int) 0x000000;
 	
 	mmu_entry aux = (mmu_entry) {
 
@@ -135,10 +135,10 @@ void mmu_inicializar(){
 	unsigned int dirVirtual = (unsigned int) 0x8000000; //esta es la direccion virtual desde donde arranco a copiar las tareas
 	for(i = 0; i < 8; i++){
 		mmu_inicializar_dir_tarea(); // creo el page directory
-		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //escribo la primer pagina de la tarea en la memoria fisica
+//		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //escribo la primer pagina de la tarea en la memoria fisica
 		codTarea += (unsigned int) 0x1000; //voy a la siguiente pagina de la tarea
 		dirVirtual += (unsigned int) 0x1000; //voy a la siguiente direccion fisica libre para copiar la nueva pagina
-		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //mapeo la segunda pagina de la tarea en la memoria fisica
+//		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //mapeo la segunda pagina de la tarea en la memoria fisica
 		codTarea += (unsigned int) 0x1000; //voy a la siguiente tarea
 		dirVirtual += (unsigned int) 0x1000; // voy al siguiente espacio libre para copiar la nueva tarea
 		dameMemoria(); //pido memoria para la siguiente tarea
@@ -148,7 +148,7 @@ void mmu_inicializar(){
 
 void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attrs){
 	
-	mmu_entry* pd = (mmu_entry*) cr3;
+	mmu_entry* pd = (mmu_entry*) (cr3 >> 12);
 	unsigned int table = 0;
 	unsigned int ptIndex = 0;
 	unsigned int pdIndex = virtual >> 22; //saco el offset del page
@@ -167,4 +167,26 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	pd += index; //me muevo dentro del bloque de 4k de memoria a donde quiero copiar el dato
 	//*pd = fisica;//coloco la memoria en el espacio fisico
 	// pd es tipo mmu_entry por eso no le puedo pasar fisica que es unsigned int, pensaba crear otro puntero a pd del tipo necesario
+	tlbflush();
+}
+
+void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
+	mmu_entry* pd = (mmu_entry*) (cr3 >> 12);
+	unsigned int table = 0;
+	unsigned int ptIndex = 0;
+	unsigned int pdIndex = virtual >> 22; //saco el offset del page
+	unsigned int index = virtual;
+	pd += pdIndex; //me muevo dentro del page
+	table = pd->base_0_20 << 12; 
+	pd = (mmu_entry*)table; //apunto al table que corresponde
+	
+	ptIndex = virtual << 10;
+	ptIndex = ptIndex >> 22; //busco el index de la table
+	pd += ptIndex; //me muevo dentro de la table q estoy
+	table = pd->base_0_20 << 12; 
+	pd = (mmu_entry*)table; //voy al bloque de direccion que busco
+	index = index << 20;
+	index = index >> 20;
+	pd += index;
+	//*pd = (mmu_entry) 0x0;
 }
