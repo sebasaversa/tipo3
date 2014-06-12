@@ -78,7 +78,6 @@ start:
     ; Establecer la base de la pila
     MOV ESP, 0x27000
     MOV EBP, ESP
-    
     CALL pintar
     CALL idt_inicializar
 	LIDT [IDT_DESC]
