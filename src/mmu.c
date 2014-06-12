@@ -8,7 +8,7 @@
 #include "mmu.h"
 
 void dameMemoria(){
-	area_libre += (unsigned int) 0x5000;
+	area_libre += (unsigned int) 0x6000;
 }
 
 void mmu_inicializar_dir_kernel() {
@@ -138,7 +138,7 @@ void mmu_inicializar(){
 		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //escribo la primer pagina de la tarea en la memoria fisica
 		codTarea += (unsigned int) 0x1000; //voy a la siguiente pagina de la tarea
 		dirVirtual += (unsigned int) 0x1000; //voy a la siguiente direccion fisica libre para copiar la nueva pagina
-//		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //mapeo la segunda pagina de la tarea en la memoria fisica
+		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //mapeo la segunda pagina de la tarea en la memoria fisica
 		codTarea += (unsigned int) 0x1000; //voy a la siguiente tarea
 		dirVirtual += (unsigned int) 0x1000; // voy al siguiente espacio libre para copiar la nueva tarea
 		dameMemoria(); //pido memoria para la siguiente tarea
@@ -154,13 +154,13 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	unsigned int pdIndex = virtual >> 22; //saco el offset del page
 	unsigned int index = virtual;
 	pd += pdIndex; //me muevo dentro del page
-	table = pd->base_0_20 << 12; 
+	table = pd->base_0_20; 
 	pd = (mmu_entry*)table; //apunto al table que corresponde
 	
 	ptIndex = virtual << 10;
 	ptIndex = ptIndex >> 22; //busco el index de la table
 	pd += ptIndex; //me muevo dentro de la table q estoy
-	table = pd->base_0_20 << 12; 
+	table = pd->base_0_20; 
 	pd = (mmu_entry*)table; //voy al bloque de direccion que busco
 	index = index << 20;
 	index = index >> 20;
