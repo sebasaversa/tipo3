@@ -15,7 +15,7 @@ void pintar(){
 	
 	int f = 0;
 	int c;
-	while(f < VIDEO_FILS ){
+	while(f < 20 ){
 		c = 0;
 		while (c < VIDEO_COLS){
 			if (c <= 50){
@@ -44,16 +44,21 @@ void pintarTablero(){
 			}
 			if (c >= 52)
 			{
-				if(f == 0 || f == 20)
+				if(f == 0 || f == 39)
 				{
 				vd->fondo = C_FG_RED;
 				}
-				if( 0 < f && f < 19)
+				if( 0 < f && f < 39)
 				{
 					vd->fondo = C_FG_LIGHT_GREY;
 				}
 				
 			}
+			if ( (52 < c && c < 70) && f >= 47)
+			{
+				vd->fondo = C_FG_LIGHT_GREY;
+			}
+			
 			vd->ascii = (unsigned char) 0x0;
 			vd++;	
 			c++;

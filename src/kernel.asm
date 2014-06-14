@@ -37,18 +37,18 @@ iniciando_mp_len equ    $ - iniciando_mp_msg
 BITS 16
 start:
     ; Deshabilitar interrupciones
-    CLI
+    cli
 
     ; Cambiar modo de video a 80 X 50
-    MOV AX, 0003h
-    INT 10h ; set mode 03h
-    XOR BX, BX
-    MOV BX, 1112h
-    INT 10h ; load 8x8 font
+    mov ax, 0003h
+    int 10h ; set mode 03h
+    xor bx, bx
+    mov ax, 1112h
+    int 10h ; load 8x8 font
 
     ; Imprimir mensaje de bienvenida
     imprimir_texto_mr iniciando_mr_msg, iniciando_mr_len, 0x07, 0, 0
-    
+  
 
     ; Habilitar A20
     CALL habilitar_A20
@@ -102,8 +102,9 @@ start:
     CALL deshabilitar_pic
     CALL resetear_pic
     CALL habilitar_pic
+    STI
     ; Cargar directorio de paginas
-   
+    
     ; Habilitar paginacion
     
     ; Inicializar tss

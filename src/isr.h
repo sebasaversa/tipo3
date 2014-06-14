@@ -28,4 +28,6 @@ void _isr16();
 void _isr17();
 void _isr18();
 void _isr19();
+void _isr32();
+void _isr33();
 #endif  /* !__ISR_H__ */

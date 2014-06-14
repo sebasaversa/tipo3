@@ -22,6 +22,8 @@ extern game_misil
 extern game_minar
 
 extern mostrar_int
+global _isr32
+global _isr33
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -30,17 +32,15 @@ extern mostrar_int
 global _isr%1
 
 _isr%1:
-mov EAX, %1
-push eax
-call mostrar_int
-pop eax
-
+    mov EAX, %1
+    CALL mostrar_int
+.fin:
     mov eax, 0xFFFF
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
 ;    jmp $
-iret
+;    iret
 %endmacro
 
 ;;
@@ -77,11 +77,27 @@ ISR 19
 ;;
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
+_isr32:
+    CLI
+    PUSHA
+    CALL fin_intr_pic1
+    ; CODIGO DE LA INTR
+
+    CALL proximo_reloj
+
+    POPA
+    STI
+    IRET
 
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
+    _isr33:
+;PUSHA
+;POPA
+xchg bx, bx
 
+IRET
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;

@@ -156,7 +156,6 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	pd += pdIndex; //me muevo dentro del page
 	table = pd->base_0_20; 
 	pd = (mmu_entry*)table; //apunto al table que corresponde
-	
 	ptIndex = virtual << 10;
 	ptIndex = ptIndex >> 22; //busco el index de la table
 	pd += ptIndex; //me muevo dentro de la table q estoy
@@ -168,6 +167,7 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 	unsigned int* pd2 =(unsigned int*) pd;
 	*pd2 = fisica;
 	// pd es tipo mmu_entry por eso no le puedo pasar fisica que es unsigned int, pensaba crear otro puntero a pd del tipo necesario
+
 	tlbflush();
 }
 
