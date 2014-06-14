@@ -81,7 +81,10 @@ start:
     CALL pintar
     CALL idt_inicializar
 	LIDT [IDT_DESC]
-	
+
+  ;  xor eax, eax
+  ;  xor edi, edi
+  ;  div edi	
 	CALL pintarTablero
 
 	CALL mmu_inicializar_dir_kernel
@@ -91,7 +94,7 @@ start:
     OR EAX, 0x80000000 ;habilitamos paginacion
 	MOV CR0, EAX
     ; Imprimir mensaje de bienvenida
-    
+
     ; Inicializar pantalla
     
     ; Inicializar el manejador de memoria

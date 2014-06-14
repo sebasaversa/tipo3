@@ -22,6 +22,7 @@ extern game_misil
 extern game_minar
 
 extern mostrar_int
+extern mostrar_num
 global _isr32
 global _isr33
 ;;
@@ -33,7 +34,9 @@ global _isr%1
 
 _isr%1:
     mov EAX, %1
+    PUSH EAX
     CALL mostrar_int
+    POP EAX
 .fin:
     mov eax, 0xFFFF
     mov ebx, 0xFFFF
@@ -92,12 +95,18 @@ _isr32:
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
-    _isr33:
-;PUSHA
-;POPA
-xchg bx, bx
-
-IRET
+_isr33:
+	CLI
+	PUSHA
+	XOR EAX, EAX
+	IN AL, 0x60
+	;xchg bx, bx
+	PUSH EAX
+	CALL mostrar_num
+	POP EAX
+	POPA
+	STI
+	IRET
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
@@ -119,7 +128,7 @@ proximo_reloj:
                 mov ebx, 0
         .ok:
                 add ebx, isrClock
-                imprimir_texto_mp ebx, 1, 0x0f, 49, 79
+                imprimir_texto_mp ebx, 1, 0x07, 49, 79
                 popad
         ret
         

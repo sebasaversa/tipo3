@@ -25,5 +25,6 @@ typedef struct str_memoria_video {
 void pintar();
 void pintarTablero();
 void mostrar_int(int i);
+void mostrar_num(int n);
 
 #endif  /* !__SCREEN_H__ */
