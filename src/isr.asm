@@ -24,6 +24,7 @@ extern game_minar
 extern mostrar_int
 global _isr32
 global _isr33
+global _isr52
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -92,26 +93,29 @@ _isr32:
 ;;
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
-    _isr33:
-;PUSHA
-;POPA
-xchg bx, bx
+_isr33:
+    CLI
+    PUSHA
 
-IRET
+    xchg bx, bx
+
+    POPA
+    STI
+    IRET
 
 ;;
 ;; Ruta de atencion de 0x52
 ;; -------------------------------------------------------------------------- ;;
 
 _isr52:
-CLI
-PUSHA
+    CLI
+    PUSHA
 
-MOV EAX, 0x42
+    MOV EAX, 0x42
 
-POPA
-STI
-IRET
+    POPA
+    STI
+    IRET
 
 ;;
 ;; Rutinas de atención de las SYSCALLS
