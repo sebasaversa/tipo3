@@ -25,6 +25,7 @@ extern mostrar_int
 extern mostrar_num
 global _isr32
 global _isr33
+global _isr52
 ;;
 ;; Definición de MACROS
 ;; -------------------------------------------------------------------------- ;;
@@ -107,6 +108,21 @@ _isr33:
 	POPA
 	STI
 	IRET
+ 
+;;
+;; Ruta de atencion de 0x52
+;; -------------------------------------------------------------------------- ;;
+
+_isr52:
+    CLI
+    PUSHA
+
+    MOV EAX, 0x42
+
+    POPA
+    STI
+    IRET
+
 ;;
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;

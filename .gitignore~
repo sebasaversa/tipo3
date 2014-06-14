@@ -1,2 +1,6 @@
 *.o
-
+*.log
+*.img
+*.bin
+*.tsko
+diskette.img
