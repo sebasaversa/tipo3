@@ -82,9 +82,9 @@ start:
     CALL idt_inicializar
 	LIDT [IDT_DESC]
 
-  ;  xor eax, eax
-  ;  xor edi, edi
-  ;  div edi	
+    xor eax, eax
+    xor edi, edi
+    div edi	
 	CALL pintarTablero
 
 	CALL mmu_inicializar_dir_kernel
