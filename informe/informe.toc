@@ -1,0 +1,21 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Objetivos generales}{4}
+\contentsline {section}{\numberline {2}Kernel.asm}{5}
+\contentsline {subsection}{\numberline {2.1}B\'asico:}{5}
+\contentsline {subsection}{\numberline {2.2}Preparando el modo protegido:}{5}
+\contentsline {subsection}{\numberline {2.3}Modo protegido:}{5}
+\contentsline {subsection}{\numberline {2.4}Paginaci\'on:}{6}
+\contentsline {section}{\numberline {3}Kernel.asm}{7}
+\contentsline {subsection}{\numberline {3.1}Modificaciones:}{7}
+\contentsline {section}{\numberline {4}Kernel.asm}{9}
+\contentsline {subsection}{\numberline {4.1}Modificaciones:}{9}
+\contentsline {section}{\numberline {5}Kernel.asm}{11}
+\contentsline {subsection}{\numberline {5.1}Modificaciones:}{11}
+\contentsline {section}{\numberline {6}Kernel.asm}{13}
+\contentsline {subsection}{\numberline {6.1}Modificaciones:}{13}
+\contentsline {section}{\numberline {7}Kernel.asm}{15}
+\contentsline {subsection}{\numberline {7.1}Modificaciones:}{15}
+\contentsline {section}{\numberline {8}Kernel.asm}{17}
+\contentsline {subsection}{\numberline {8.1}Modificaciones:}{17}
+\contentsline {section}{\numberline {9}Kernel.asm}{19}
+\contentsline {subsection}{\numberline {9.1}Modificaciones:}{19}

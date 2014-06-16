@@ -1,0 +1,106 @@
+\documentclass[a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{charter}   % tipografia
+\usepackage{graphicx}
+%\usepackage{makeidx}
+
+%\usepackage{float}
+%\usepackage{amsmath, amsthm, amssymb}
+%\usepackage{amsfonts}
+%\usepackage{sectsty}
+%\usepackage{charter}
+%\usepackage{wrapfig}
+%\usepackage{listings}
+%\lstset{language=C}
+
+
+\input{codesnippet}
+\input{page.layout}
+% \setcounter{secnumdepth}{2}
+\usepackage{underscore}
+\usepackage{caratula}
+\usepackage{url}
+
+
+% ******************************************************** %
+%              TEMPLATE DE INFORME ORGA2 v0.1              %
+% ******************************************************** %
+% ******************************************************** %
+%                                                          %
+% ALGUNOS PAQUETES REQUERIDOS (EN UBUNTU):                 %
+% ========================================
+%                                                          %
+% texlive-latex-base                                       %
+% texlive-latex-recommended                                %
+% texlive-fonts-recommended                                %
+% texlive-latex-extra?                                     %
+% texlive-lang-spanish (en ubuntu 13.10)                   %
+% ******************************************************** %
+
+
+
+\begin{document}
+
+
+\thispagestyle{empty}
+\materia{Organización del Computador II}
+\submateria{Primer Cuatrimestre de 2014}
+\titulo{Trabajo Práctico III}
+\subtitulo{TronTank}
+\integrante{Tomas Shaurli}{671/10}{tshaurli@gmail.com}
+\integrante{Sebastian Aversa}{379/11}{sebastianaversa@gmail.com}
+\integrante{Fernando Gabriel Otero}{424/11}{fergabot@gmail.com}
+
+\maketitle
+\newpage
+
+\thispagestyle{empty}
+\vfill
+\begin{abstract}
+En el presente trabajo se realiza la configuraci\'on de un kernel de sistema operativo de 32bits con sus elementos indispensables (GDT, IDT, TSS, paginaci\'on, etc) y el manejo de tareas.
+\end{abstract}
+\newpage
+\thispagestyle{empty}
+\vspace{3cm}
+\tableofcontents
+\newpage
+
+
+\normalsize
+\newpage
+
+\section{Objetivos generales}
+
+Este trabajo pr\'actico consisti\'o en un conjunto de ejercicios para el parendizaje de los conceptos de System Programming
+\\
+Se implement\'o para ello un sistema m\'inimo en base a los archivos aportados por la c\'atedra, el cual ser\'a capaz de manejar exactamente 8 tareas a nivel de usuario.
+El sistema ser\'a capaz de capturar cualquier problema que puedan generar las tareas y tomar las acciones necesarias para quitar a la tarea del sistema.
+Los ejercicios de este trabajo pr\'actico proponen utilizar los mecanismos que posee el procesador para la programaci\'on desde el punto de vista del sistema operativo 
+enfocados en dos aspectos: el sistema de protecci\'on y la ejecuci\'on concurrente de tareas.
+
+%\newpage
+%\input{introduccion}
+\newpage
+\input{kernel}
+\newpage
+\input{gdt}
+\newpage
+\input{video}
+\newpage
+\input{idt}
+\newpage
+\input{mmu}
+\newpage
+\input{relojTeclado}
+\newpage
+\input{tss}
+\newpage
+\input{scheduler}
+\newpage
+%\section{Conclusiones y trabajo futuro}
+%asdf4
+
+
+\end{document}
+

@@ -1,0 +1,130 @@
+
+\section{Kernel.asm}
+
+\subsection{B\'asico:}
+
+En el kernel lo primero que hacemos es deshabilitar las interrupciones con \textbf{CLI} y cambiamos el modo de video. 
+Luego, iremos habilitando y creando los diversos componentes, llamando a las funciones destinadas para \'ese fin.
+
+Esas funciones son listadas al comienzo del c\'odigo:
+
+\begin{codesnippet}
+\begin{verbatim}
+extern GDT_DESC
+extern IDT_DESC 
+extern idt_inicializar
+extern mmu_inicializar
+extern mmu_inicializar_dir_kernel
+extern pintar
+extern pintarTablero
+extern deshabilitar_pic
+extern resetear_pic
+extern habilitar_pic
+\end{verbatim}
+\end{codesnippet}
+
+\subsection{Preparando el modo protegido:}
+Lo segundo que tenemos que hacer es habilitar A20 en el controlador del teclado para tener acceso a direcciones superiores a los $2^{20}$ bits
+
+Luego, cargamos la \textbf{GDT} con \textit{LGDT}, pasandole el descriptor de la GDT que ya tiene el formato adecuado
+\begin{codesnippet}
+\begin{verbatim}
+    ; Habilitar A20
+    CALL habilitar_A20
+    ; Cargar la GDT
+    LGDT [GDT_DESC]
+\end{verbatim}
+\end{codesnippet}
+Ahora, con la GDT cargada y A20 habilitado, podemos pasar a modo protegido seteando el bit PE de CR0 (bit 0) en 1.
+
+Al finalizar debemos hacer un \textit{far jump} a la etiqueta de modo protegido. Es importante notar que el far jump es la unica forma de modificar el CS, operaci\'on necesaria para que no haya errores.
+\begin{codesnippet}
+\begin{verbatim}
+; Setear el bit PE del registro CR0 (esto pasa a modo protegido)
+    MOV EAX,CR0
+    OR EAX,1
+    MOV CR0,EAX
+    ; Saltar a modo protegido
+    JMP (9*0x08):modoProtegido
+\end{verbatim}
+\end{codesnippet}
+
+\subsection{Modo protegido:}
+Ya estamos en modo protegido. Ahora seteamos los selectores de segmentos haciendo uso de la GDT.
+
+\begin{codesnippet}
+\begin{verbatim}
+    BITS 32
+    modoProtegido:
+        ;CODIGO
+    ; Establecer selectores de segmentos
+    XOR EAX, EAX
+    MOV AX, 1011000b ;1011b == 11d (index de la GDT) | 0 (0 -> GDT / 1 -> LDT) |
+	                                                 | 00 (NIVEL DE PRIVILEGIO)
+    MOV DS, AX
+    MOV ES, AX
+    MOV GS, AX
+    MOV SS, AX
+    MOV AX, 1101000b
+    MOV FS, AX
+\end{verbatim}
+\end{codesnippet}
+
+Establecemos la base de la pila, llamamos a \textit{pintarTablero()} que limpia la pantalla y la pinta como en la figura 8 del enunciado. 
+Luego, llamamos a idt_inicializar y, una vez inicializada, 
+le pasamos el descriptor de la \textbf{IDT} a \textit{LIDT}
+
+Por ultimo pintamos 
+
+\begin{codesnippet}
+\begin{verbatim}
+    ; Establecer la base de la pila
+    MOV ESP, 0x27000
+    MOV EBP, ESP
+    CALL pintarTablero
+    CALL idt_inicializar
+    LIDT [IDT_DESC]
+\end{verbatim}
+\end{codesnippet}
+
+\subsection{Paginaci\'on:}
+
+mmu_inicializar_dir_kernel
+MOV CR3, EAX ;cargo en CR3 la direccion del page directory
+
+MOV EAX, CR0
+OR EAX, 0x80000000 ;habilitamos paginacion
+MOV CR0, EAX
+
+\begin{codesnippet}
+\begin{verbatim}
+	CALL mmu_inicializar_dir_kernel
+	MOV EAX, 0x27000
+	MOV CR3, EAX ;cargo en CR3 la direccion del page directory
+	MOV EAX, CR0
+    OR EAX, 0x80000000 ;habilitamos paginacion
+	MOV CR0, EAX
+\end{verbatim}
+\end{codesnippet}
+\begin{codesnippet}
+\begin{verbatim}
+    ; Imprimir mensaje de bienvenida
+
+    ; Inicializar pantalla
+    
+    ; Inicializar el manejador de memoria
+\end{verbatim}
+\end{codesnippet}
+\begin{codesnippet}
+\begin{verbatim}
+    ; Inicializar el directorio de paginas
+    CALL mmu_inicializar
+    
+    CALL deshabilitar_pic
+    CALL resetear_pic
+    CALL habilitar_pic
+    STI
+\end{verbatim}
+\end{codesnippet}
+
+\textbf{RESTO}
