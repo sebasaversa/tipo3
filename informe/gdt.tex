@@ -1,15 +1,19 @@
 
 \section{GDT}
-\subsection{Modificaciones:}
+\subsection{gdt.h}
+En el archivo gdt.h s\'olo se modifico el define GDT_COUNT, d\'andole 20 por valor ya que es la cantidad de entradas que tiene la GDT
 
+\subsection{gdt.c}
+En gdt.c se tom\'o la extructura dada por la c\'atedra y se agregaron las entradas correspondientes.
 
+\begin{itemize}
+	\item La entrada nula, en la posicion 0
+	
+	\item Dos descriptores de segmentos de datos, uno de prioridad 0 y otro de prioridad 3
 
-
-\begin{codesnippet}
-\begin{verbatim}
-    #define GDT_COUNT 10
-\end{verbatim}
-\end{codesnippet}
-
-
-+ entradas agregadas a la gdt
+	\item Dos descriptores de segmentos de c\'odigo, uno de prioridad 0 y otro de prioridad 3
+	
+	\item El descriptor del segmento de video
+	
+	\item Tres descriptores de TSS, el primero para la tarea \textit{Idle}
+\end{itemize}

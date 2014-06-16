@@ -5,17 +5,23 @@
 \contentsline {subsection}{\numberline {2.2}Preparando el modo protegido:}{5}
 \contentsline {subsection}{\numberline {2.3}Modo protegido:}{5}
 \contentsline {subsection}{\numberline {2.4}Paginaci\'on:}{6}
-\contentsline {section}{\numberline {3}Kernel.asm}{7}
-\contentsline {subsection}{\numberline {3.1}Modificaciones:}{7}
-\contentsline {section}{\numberline {4}Kernel.asm}{9}
-\contentsline {subsection}{\numberline {4.1}Modificaciones:}{9}
-\contentsline {section}{\numberline {5}Kernel.asm}{11}
+\contentsline {section}{\numberline {3}GDT}{7}
+\contentsline {subsection}{\numberline {3.1}gdt.h}{7}
+\contentsline {subsection}{\numberline {3.2}gdt.c}{7}
+\contentsline {section}{\numberline {4}Video}{8}
+\contentsline {subsection}{\numberline {4.1}screen.h:}{8}
+\contentsline {subsection}{\numberline {4.2}screen.c:}{8}
+\contentsline {subsubsection}{\numberline {4.2.1}void pintarTablero()}{8}
+\contentsline {subsubsection}{\numberline {4.2.2}void imprimir(char* m, memoria_video* vd)}{9}
+\contentsline {subsubsection}{\numberline {4.2.3}void mostrar_int(int teclado)}{9}
+\contentsline {subsubsection}{\numberline {4.2.4}void mostrar_num(int teclado)}{9}
+\contentsline {section}{\numberline {5}IDT}{11}
 \contentsline {subsection}{\numberline {5.1}Modificaciones:}{11}
-\contentsline {section}{\numberline {6}Kernel.asm}{13}
+\contentsline {section}{\numberline {6}MMU}{13}
 \contentsline {subsection}{\numberline {6.1}Modificaciones:}{13}
-\contentsline {section}{\numberline {7}Kernel.asm}{15}
+\contentsline {section}{\numberline {7}Interrupciones de reloj y teclado}{15}
 \contentsline {subsection}{\numberline {7.1}Modificaciones:}{15}
-\contentsline {section}{\numberline {8}Kernel.asm}{17}
+\contentsline {section}{\numberline {8}TSS}{17}
 \contentsline {subsection}{\numberline {8.1}Modificaciones:}{17}
-\contentsline {section}{\numberline {9}Kernel.asm}{19}
+\contentsline {section}{\numberline {9}Scheduler}{19}
 \contentsline {subsection}{\numberline {9.1}Modificaciones:}{19}
