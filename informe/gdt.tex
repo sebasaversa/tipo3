@@ -1,97 +1,15 @@
 
-\section{Kernel.asm}
+\section{GDT}
 \subsection{Modificaciones:}
 
-En el kernel lo primero que hacemos es deshabilitar las interrupciones con \textbf{cli} y cambiamos el modo de video. 
-Luego, iremos habilitando y creando los diversos componentes, llamando a las funciones destinadas para \'ese fin.
-\\
-Esas funciones son listadas al comienzo del c\'odigo:
+
+
 
 \begin{codesnippet}
 \begin{verbatim}
-extern GDT_DESC
-extern IDT_DESC 
-extern idt_inicializar
-extern mmu_inicializar
-extern mmu_inicializar_dir_kernel
-extern pintar
-extern pintarTablero
-extern deshabilitar_pic
-extern resetear_pic
-extern habilitar_pic
+    #define GDT_COUNT 10
 \end{verbatim}
 \end{codesnippet}
 
-\begin{codesnippet}
-\begin{verbatim}
-    ; Habilitar A20
-    CALL habilitar_A20
-    ; Cargar la GDT
-    LGDT [GDT_DESC]
-\end{verbatim}
-\end{codesnippet}
 
-\begin{codesnippet}
-\begin{verbatim}
-; Setear el bit PE del registro CR0 (esto pasa a modo protegido)
-    MOV EAX,CR0
-    OR EAX,1
-    MOV CR0,EAX
-    ; Saltar a modo protegido
-    JMP (9*0x08):modoProtegido
-
-    BITS 32
-\end{verbatim}
-\end{codesnippet}
-
-\begin{codesnippet}
-\begin{verbatim}
-    modoProtegido:
-        ;CODIGO
-        
-    ; Establecer selectores de segmentos
-    XOR EAX, EAX
-    MOV AX, 1011000b ;1011b == 11d (index de la GDT) | 0 (0 -> GDT / 1 -> LDT) | 00 (NIVEL DE PRIVILEGIO)
-    MOV DS, AX
-    MOV ES, AX
-    MOV GS, AX
-    MOV SS, AX
-    MOV AX, 1101000b
-    MOV FS, AX
-    ; Establecer la base de la pila
-    MOV ESP, 0x27000
-    MOV EBP, ESP
-    CALL pintar
-    CALL idt_inicializar
-	LIDT [IDT_DESC]
-
-    xor eax, eax
-    xor edi, edi
-    div edi	
-	CALL pintarTablero
-\end{verbatim}
-\end{codesnippet}
-
-\begin{codesnippet}
-\begin{verbatim}
-	CALL mmu_inicializar_dir_kernel
-	MOV EAX, 0x27000
-	MOV CR3, EAX ;cargo en CR3 la direccion del page directory
-	MOV EAX, CR0
-    OR EAX, 0x80000000 ;habilitamos paginacion
-	MOV CR0, EAX
-    ; Imprimir mensaje de bienvenida
-
-    ; Inicializar pantalla
-    
-    ; Inicializar el manejador de memoria
-    
-    ; Inicializar el directorio de paginas
-    CALL mmu_inicializar
-    
-    CALL deshabilitar_pic
-    CALL resetear_pic
-    CALL habilitar_pic
-    STI
-\end{verbatim}
-\end{codesnippet}
++ entradas agregadas a la gdt

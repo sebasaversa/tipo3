@@ -78,11 +78,11 @@ start:
     ; Establecer la base de la pila
     MOV ESP, 0x27000
     MOV EBP, ESP
-    CALL pintar
+    ;CALL pintar
+    CALL pintarTablero
     CALL idt_inicializar
 	LIDT [IDT_DESC]
-	CALL pintarTablero
-
+	
 	CALL mmu_inicializar_dir_kernel
 	MOV EAX, 0x27000
 	MOV CR3, EAX ;cargo en CR3 la direccion del page directory

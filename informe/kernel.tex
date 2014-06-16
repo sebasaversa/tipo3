@@ -89,12 +89,8 @@ Por ultimo pintamos
 
 \subsection{Paginaci\'on:}
 
-mmu_inicializar_dir_kernel
-MOV CR3, EAX ;cargo en CR3 la direccion del page directory
-
-MOV EAX, CR0
-OR EAX, 0x80000000 ;habilitamos paginacion
-MOV CR0, EAX
+Primero inicializamos las p\'aginas con \textit{identity mapping} y cargo en CR3 la direccion del \textit{page directory}
+Luego modifico CR0 para habilitar paginaci\'on
 
 \begin{codesnippet}
 \begin{verbatim}
@@ -106,6 +102,8 @@ MOV CR0, EAX
 	MOV CR0, EAX
 \end{verbatim}
 \end{codesnippet}
+
+Algo
 \begin{codesnippet}
 \begin{verbatim}
     ; Imprimir mensaje de bienvenida
@@ -115,6 +113,9 @@ MOV CR0, EAX
     ; Inicializar el manejador de memoria
 \end{verbatim}
 \end{codesnippet}
+
+Algo
+directorio de paginas de tanques?
 \begin{codesnippet}
 \begin{verbatim}
     ; Inicializar el directorio de paginas

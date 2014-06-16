@@ -7,7 +7,7 @@
 
 #include "screen.h"
 #include "colors.h"
-
+/*
 void pintar(){
 	
 	memoria_video* vd = (memoria_video*) (0xb8000);
@@ -28,7 +28,7 @@ void pintar(){
 		f++;
 	}
 }
-
+*/
 void pintarTablero(){
 
 	memoria_video* vd = (memoria_video*) (0xb8000);
@@ -65,7 +65,6 @@ void pintarTablero(){
 		}
 		f++;
 	}
-	
 }
 
 
@@ -77,9 +76,7 @@ void imprimir(char* m, memoria_video* vd){
 		vdAux->ascii = *m;
 		m++;
 		vdAux++;
-	
 	}
-	
 }
 
 void mostrar_int(int error){
@@ -156,7 +153,10 @@ void mostrar_num(int teclado){
 	switch ( teclado)
 	{
 		case 2:	imprimir("1", vd);
+				break;
 		case 3: imprimir("2", vd);
+				break;
 		case 4: imprimir("3", vd);
+				break;
 	}
 }
