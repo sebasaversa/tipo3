@@ -1,14 +1,21 @@
 
-\section{IDT}
-\subsection{A modificar}
-\subsubsection{codigo util}
-\textbf{cli} \textit{cli}
-
+\section{Interrupciones de sistema}
+\subsection{idt.c}
+La idt se genera utilizando la macro dada por la catedra (completada por nosotros).
 \begin{codesnippet}
 \begin{verbatim}
-    ; Habilitar A20
-    CALL habilitar_A20
-    ; Cargar la GDT
-    LGDT [GDT_DESC]
+#define IDT_ENTRY(numero)                                                                                        \
+    idt[numero].offset_0_15 = (unsigned short) ((unsigned int)(&_isr ## numero) & (unsigned int) 0xFFFF);        \
+    idt[numero].segsel = (unsigned short) (GDT_IDX_CODE_DESC_1*8);                                                                  \
+    idt[numero].attr = (unsigned short) 0x8E00;                                                                  \
+    idt[numero].offset_16_31 = (unsigned short) ((unsigned int)(&_isr ## numero) >> 16 & (unsigned int) 0xFFFF);
 \end{verbatim}
 \end{codesnippet}
+
+Esta macro se usa dada la similitud entre todas las interrupciones manejadas en este archivo. De hecho, en idt.c la unica diferencia 
+entre dos interrupciones es su n\'umero
+\subsection{screen.c}
+Aqu\'i se encuentra la funci\'on \textit{mostrar_int(int error)} con los mensajes correspondentes para cada interrupcion
+\subsection{isr.asm}
+
+En el archivo isr.asm completamos la informaci\'on de las rutinas de atencion de interrupciones

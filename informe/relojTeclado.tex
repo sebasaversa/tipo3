@@ -1,14 +1,40 @@
 
 \section{Interrupciones de reloj y teclado}
-\subsection{A modificar}
-\subsubsection{codigo util}
-\textbf{cli} \textit{cli}
+%\subsection{A modificar}
+%\subsubsection{codigo util}
+%\textbf{cli} \textit{cli}
 
 \begin{codesnippet}
 \begin{verbatim}
-    ; Habilitar A20
-    CALL habilitar_A20
-    ; Cargar la GDT
-    LGDT [GDT_DESC]
+;;
+;; Rutina de atención del RELOJ
+;; -------------------------------------------------------------------------- ;;
+_isr32:
+    CLI
+    PUSHA
+    CALL fin_intr_pic1
+    ; CODIGO DE LA INTR
+
+    CALL proximo_reloj
+
+    POPA
+    STI
+    IRET
+
+;;
+;; Rutina de atención del TECLADO
+;; -------------------------------------------------------------------------- ;;
+_isr33:
+	CLI
+	PUSHA
+	XOR EAX, EAX
+	IN AL, 0x60
+	;xchg bx, bx
+	PUSH EAX
+	CALL mostrar_num
+	POP EAX
+	POPA
+	STI
+	IRET
 \end{verbatim}
 \end{codesnippet}

@@ -17,3 +17,20 @@ En gdt.c se tom\'o la extructura dada por la c\'atedra y se agregaron las entrad
 	
 	\item Tres descriptores de TSS, el primero para la tarea \textit{Idle}
 \end{itemize}
+
+En el archivo defines.h esta definido el \'indice que tiene cada entrada en la tabla.
+
+
+\begin{codesnippet}
+\begin{verbatim}
+#define GDT_IDX_NULL_DESC           0
+#define GDT_IDX_CODE_DESC_1			9
+#define GDT_IDX_CODE_DESC_2			10
+#define GDT_IDX_DATA_DESC_1			11
+#define GDT_IDX_DATA_DESC_2			12
+#define GDT_IDX_VIDEO_DESC_1		13
+#define GDT_IDX_TSS_INICIAL			14
+#define GDT_IDX_TSS1				15
+#define GDT_IDX_TSS2				16
+\end{verbatim}
+\end{codesnippet}
