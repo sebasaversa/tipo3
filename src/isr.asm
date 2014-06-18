@@ -43,7 +43,7 @@ _isr%1:
     mov ebx, 0xFFFF
     mov ecx, 0xFFFF
     mov edx, 0xFFFF
-;    jmp $
+    jmp $
 ;    iret
 %endmacro
 
@@ -90,7 +90,6 @@ _isr32:
     CALL proximo_reloj
 
     POPA
-    STI
     IRET
 
 ;;
@@ -99,14 +98,14 @@ _isr32:
 _isr33:
 	CLI
 	PUSHA
-	XOR EAX, EAX
+	CALL fin_intr_pic1
+    XOR EAX, EAX
 	IN AL, 0x60
 	;xchg bx, bx
 	PUSH EAX
 	CALL mostrar_num
 	POP EAX
 	POPA
-	STI
 	IRET
  
 ;;

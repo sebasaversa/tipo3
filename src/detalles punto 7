@@ -1,0 +1,14 @@
+a) Construir una funci ́n para inicializar las estructuras de datos del scheduler.
+Definir nuestro struct y que salga
+
+b) Crear la funci ́n sched proximo indice() que devuelve el  ́ındice en la GDT de la pr ́xima tarea a ser ejecutada. Construir la rutina de forma devuelva el indice de la TSS1 y luego el de la TSS2 de forma intercalada, para dos tareas fijas.
+0 / 15 / 16
+Hace todo el cambioswap
+
+c) Modificar la rutina de la interrupci ́n 0x52, para que implemente los tres servicios del sistema seg ́n se indica en la secci ́n 3.1.1.u
+
+d) Modificar el c ́digo necesario para que se realice el intercambio de tareas por cada ciclo de reloj. El intercambio se realizar ́ seg ́n indique la funci ́n sched proximo indice().a
+
+e) Modificar la funci ́n sched proximo indice() de forma que ejecute todas las tareas seg ́n se describe en la secci ́n 3.2.
+
+El kernel (mediante las funciones que brinda el schedduler) se encarga de desalojar las tareas/etc.

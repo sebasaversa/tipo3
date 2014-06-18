@@ -19,13 +19,10 @@
 \contentsline {subsection}{\numberline {5.1}idt.c}{11}
 \contentsline {subsection}{\numberline {5.2}screen.c}{11}
 \contentsline {subsection}{\numberline {5.3}isr.asm}{11}
-\contentsline {subsubsection}{\numberline {5.3.1}codigo util}{11}
 \contentsline {section}{\numberline {6}MMU}{12}
 \contentsline {subsection}{\numberline {6.1}A modificar}{12}
 \contentsline {subsubsection}{\numberline {6.1.1}codigo util}{12}
 \contentsline {section}{\numberline {7}Interrupciones de reloj y teclado}{13}
-\contentsline {subsection}{\numberline {7.1}A modificar}{13}
-\contentsline {subsubsection}{\numberline {7.1.1}codigo util}{13}
 \contentsline {section}{\numberline {8}TSS}{14}
 \contentsline {subsection}{\numberline {8.1}A modificar}{14}
 \contentsline {subsubsection}{\numberline {8.1.1}codigo util}{14}

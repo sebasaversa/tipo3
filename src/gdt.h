@@ -19,19 +19,19 @@ typedef struct str_gdt_descriptor {
 } __attribute__((__packed__)) gdt_descriptor;
 
 typedef struct str_gdt_entry {
-    unsigned short  limit_0_15;
-    unsigned short  base_0_15;
-    unsigned char   base_23_16;
-    unsigned char   type:4;
-    unsigned char   s:1;
-    unsigned char   dpl:2;
-    unsigned char   p:1;
-    unsigned char   limit_16_19:4;
-    unsigned char   avl:1;
-    unsigned char   l:1;
-    unsigned char   db:1;
-    unsigned char   g:1;
-    unsigned char   base_31_24;
+        unsigned short  limit_0_15;
+        unsigned short  base_0_15;
+        unsigned char   base_23_16;
+        unsigned char   type:4;
+        unsigned char   s:1;
+        unsigned char   dpl:2;
+        unsigned char   p:1;
+        unsigned char   limit_16_19:4;
+        unsigned char   avl:1;
+        unsigned char   l:1;
+        unsigned char   db:1;
+        unsigned char   g:1;
+        unsigned char   base_31_24;
 } __attribute__((__packed__, aligned (8))) gdt_entry;
 
 /* Tabla GDT */

@@ -13,4 +13,14 @@
 
 unsigned short sched_proximo_indice();
 
+nodo *actual;
+
+typedef struct str_nodo{
+	nodo *sig;
+	nodo *ant;
+	int tarea;
+} __attribute__((__packed__, aligned (8))) nodo;
+
+
+
 #endif	/* !__SCHED_H__ */

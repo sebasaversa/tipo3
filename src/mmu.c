@@ -11,6 +11,10 @@ void dameMemoria(){
 	area_libre += (unsigned int) 0x6000;
 }
 
+void dameMemoriaNivel0(){
+	area_libre += (unsigned int) 0x1000;
+}
+
 void mmu_inicializar_dir_kernel() {
 	mmu_entry* pd = (mmu_entry*)(0x27000);
 	//mmu_entry* pdAux = pd;
@@ -193,3 +197,4 @@ void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
 	*pd2 = 0;
 	tlbflush();
 }
+

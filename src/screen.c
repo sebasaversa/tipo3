@@ -150,13 +150,26 @@ void mostrar_int(int error){
 void mostrar_num(int teclado){
 	memoria_video* vd = (memoria_video*) (0xb8000);
 	vd += 79;
-	switch ( teclado)
+	//vd->fondo = switch ()
+	switch (teclado)
 	{
 		case 2:	imprimir("1", vd);
 				break;
 		case 3: imprimir("2", vd);
 				break;
 		case 4: imprimir("3", vd);
+				break;
+		case 5:	imprimir("4", vd);
+				break;
+		case 6: imprimir("5", vd);
+				break;
+		case 7: imprimir("6", vd);
+				break;
+		case 8:	imprimir("7", vd);
+				break;
+		case 9: imprimir("8", vd);
+				break;
+		case 10: imprimir("9", vd);
 				break;
 	}
 }

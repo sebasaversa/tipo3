@@ -4,11 +4,13 @@
 ; ==============================================================================
 
 %include "imprimir.mac"
+extern gdt
 extern GDT_DESC
 extern IDT_DESC 
 extern idt_inicializar
 extern mmu_inicializar
 extern mmu_inicializar_dir_kernel
+extern tss_inicializar
 extern pintar
 extern pintarTablero
 extern deshabilitar_pic
@@ -78,42 +80,47 @@ start:
     ; Establecer la base de la pila
     MOV ESP, 0x27000
     MOV EBP, ESP
-    ;CALL pintar
-    CALL pintarTablero
-    CALL idt_inicializar
-	LIDT [IDT_DESC]
-	
-	CALL mmu_inicializar_dir_kernel
-	MOV EAX, 0x27000
-	MOV CR3, EAX ;cargo en CR3 la direccion del page directory
-	MOV EAX, CR0
-    OR EAX, 0x80000000 ;habilitamos paginacion
-	MOV CR0, EAX
+
     ; Imprimir mensaje de bienvenida
 
     ; Inicializar pantalla
+    CALL pintarTablero
+    CALL idt_inicializar
+    LIDT [IDT_DESC]
     
     ; Inicializar el manejador de memoria
-    
+    CALL mmu_inicializar_dir_kernel
+
     ; Inicializar el directorio de paginas
     CALL mmu_inicializar
-    
-    CALL deshabilitar_pic
-    CALL resetear_pic
-    CALL habilitar_pic
-    STI
+
     ; Cargar directorio de paginas
     
     ; Habilitar paginacion
     
-    ; Inicializar tss
+    MOV EAX, 0x27000
+    MOV CR3, EAX ;cargo en CR3 la direccion del page directory
+    MOV EAX, CR0
+    OR EAX, 0x80000000 ;habilitamos paginacion
+    MOV CR0, EAX
     
+    ;/////////// PAGINACION //////////    
+    ;/////////// PAGINACION //////////    
+    ;/////////// PAGINACION //////////    
+    CALL deshabilitar_pic
+    CALL resetear_pic
+    CALL habilitar_pic
+    STI
+    ; Inicializar tss
+    CALL tss_inicializar
     ; Inicializar tss de la tarea Idle
     
     ; Inicializar tss de las tanques
     
     ; Inicializar el scheduler
-    
+    MOV AX, 14
+    LTR AX
+
     ; Inicializar la IDT
     
     ; Inicializar Game
