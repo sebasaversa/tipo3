@@ -37,7 +37,7 @@ _isr%1:
     mov EAX, %1
     PUSH EAX
     CALL mostrar_int
-    POP EAX
+    ADD ESP, 4
 .fin:
     mov eax, 0xFFFF
     mov ebx, 0xFFFF
@@ -112,7 +112,7 @@ _isr33:
 ;; Ruta de atencion de 0x52
 ;; -------------------------------------------------------------------------- ;;
 
-_isr52:
+_isr52: ;preguntar por el numero en hexa
     CLI
     PUSHA
 

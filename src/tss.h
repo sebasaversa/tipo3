@@ -59,6 +59,8 @@ extern tss tss_idle;
 extern tss tss_tanques[];
 extern tss tss_next_1;
 extern tss tss_next_2;
+extern tss* tss_pointer_busy;
+extern tss* tss_pointer_free;
 extern unsigned int* area_libre;
 
 void tss_inicializar();
