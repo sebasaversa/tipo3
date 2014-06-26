@@ -59,7 +59,7 @@ void sched_inicializar_struct_tareas(){
 	nodo* array_tareas_temp = array_tareas;
 	for (i = 0; i < 7 ; i++)
 	{
-		array_tareas_temp->tarea = tss_tanques[i];
+		*array_tareas_temp->tarea = tss_tanques[i]; //LE PUSE "*" PORQUE NODO NODO->TAREA ES *TSS Y TSS_TANQUES[I] ES TSS
 		nodo* algo;
 		array_tareas_temp->sig = algo;
 		array_tareas_temp = array_tareas->sig;
@@ -82,10 +82,10 @@ unsigned short sched_proximo_indice() {
 		tss_free = 16;}
 	
 	//ya se a que tarea guardarle el contexto
-	sched_cargar_sig_tarea(nodo->sig, gdt[tss_free]);
+	sched_cargar_sig_tarea(array_tareas->sig, gdt[tss_free]); //cambie NODO Por ARRAY_TAREAS
 	sched_guardar_contexto(tss_pointer_busy, array_tareas->tarea);
 	if (array_tareas->sig != 0)
-		actual = array_tareas->sig->tarea;
+		actual = (unsigned int)array_tareas->sig->tarea; //AGREGUE "(unsigned int)" hay que chequear esto porque tarea es una tss
 	else
 		actual = 8;
 
