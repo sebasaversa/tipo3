@@ -67,7 +67,7 @@ start:
 
     modoProtegido:
         ;CODIGO
-        
+    imprimir_texto_mr iniciando_mp_msg, iniciando_mp_len, 0x07, 0, 0    
     ; Establecer selectores de segmentos
     XOR EAX, EAX
     MOV AX, 1011000b ;1011b == 11d (index de la GDT) | 0 (0 -> GDT / 1 -> LDT) | 00 (NIVEL DE PRIVILEGIO)

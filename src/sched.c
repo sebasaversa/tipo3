@@ -10,6 +10,10 @@
 unsigned int actual = 0;
 unsigned int tss_busy = 15;
 unsigned int tss_free = 16;
+tss* tss_pointer_busy;
+tss* tss_pointer_free;
+nodo* array_tareas;
+
 	/* code */
 	/**
 	1) guardar el contexto de la tarea actual
@@ -33,15 +37,15 @@ unsigned int tss_free = 16;
 	/** 3 */
 
 void sched_inicializar_gdt(){
-	gdt[15].base_0_15 = ((unsigned int)tss_pointer_busy << 16) >> 16;
+	gdt[15].base_0_15 = ((unsigned int) tss_pointer_busy << 16) >> 16;
 	gdt[15].base_23_16 = (unsigned int) tss_pointer_busy >> 16;
 	//15->base_31_24 = ;
 	unsigned int aux = (unsigned int) (0x68 - 0x1); // 0x68 == 104 bytes
 	gdt[15].limit_0_15 = (aux << 16) >> 16;
 	gdt[15].limit_16_19 = aux >> 16;
 
-	gdt[16].base_0_15 = ((unsigned int)tss_pointer_free << 16) >> 16;
-	gdt[16].base_23_16 = (unsigned int)tss_pointer_free >> 16;
+	gdt[16].base_0_15 = ((unsigned int) tss_pointer_free << 16) >> 16;
+	gdt[16].base_23_16 = (unsigned int) tss_pointer_free >> 16;
 	//16->base_31_24 = ;
 	aux = (unsigned int) (0x68 - 0x1); // 0x68 == 104 bytes
 	gdt[16].limit_0_15 = (aux << 16) >> 16;
@@ -53,15 +57,17 @@ void sched_inicializar_struct_tareas(){
 	nodo *sig;		// para las 8 tareas
 	nodo *ant;		// para las 8 tareas
 	tss* tarea;
-	int tarea;
 } __attribute__((__packed__, aligned (8))) nodo;*/
 	int i;
 	nodo* array_tareas_temp = array_tareas;
 	for (i = 0; i < 7 ; i++)
 	{
 		*array_tareas_temp->tarea = tss_tanques[i]; //LE PUSE "*" PORQUE NODO NODO->TAREA ES *TSS Y TSS_TANQUES[I] ES TSS
-		nodo* algo;
-		array_tareas_temp->sig = algo;
+		nodo* nodo_sig =0;
+		nodo_sig->sig = 0;
+		nodo_sig->ant = array_tareas_temp;
+		nodo_sig->tarea = 0;
+		array_tareas_temp->sig = nodo_sig;
 		array_tareas_temp = array_tareas->sig;
 	}
 	array_tareas_temp->sig = array_tareas;
@@ -72,6 +78,9 @@ void sched_inicializar(){
 	sched_inicializar_gdt();
 	sched_inicializar_struct_tareas();
 }
+
+void sched_cargar_sig_tarea(nodo* n, gdt_entry gdt){}
+void sched_guardar_contexto(tss* ts, tss* ts2){} 
 
 unsigned short sched_proximo_indice() {
 	if (tss_busy == 15){

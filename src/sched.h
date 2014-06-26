@@ -20,9 +20,10 @@ typedef struct str_nodo{
 	tss* tarea;
 } __attribute__((__packed__, aligned (8))) nodo;
 
+void sched_cargar_sig_tarea(nodo* n, gdt_entry gdt); //agregue esto
+void sched_guardar_contexto(tss* ts, tss* ts2); //agregue esto
+
 extern nodo* array_tareas;
 
-	void sched_cargar_sig_tarea(nodo* n, gdt_entry gdt); //agregue esto
-	void sched_guardar_contexto(tss* ts, tss* ts2); //agregue esto
 #endif	/* !__SCHED_H__ */
 

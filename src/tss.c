@@ -29,7 +29,7 @@ void tss_inicializar() {
 
 void tss_inicializar_tarea_idle()
 {
-	gdt[GDT_IDX_TSS1].base_0_15 = (unsigned int)(&tss_idle << 16) >> 16;
+	gdt[GDT_IDX_TSS1].base_0_15 = ((unsigned int)&tss_idle << 16) >> 16;
 	gdt[GDT_IDX_TSS1].base_23_16 = (unsigned int)&tss_idle >> 16;
 	//GDT_IDX_TSS1->base_31_24 = ;
 	unsigned int aux = (unsigned int) (0x0FFF);
