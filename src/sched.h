@@ -11,19 +11,18 @@
 #include "screen.h"
 #include "tss.h"
 
+typedef struct str_selector_offset{
+    int offset;       
+    short selector;
+} __attribute__((__packed__)) selector_offset;
+
+
 unsigned short sched_proximo_indice();
 
-
-typedef struct str_nodo{
-	struct str_nodo *sig;		// para las 8 tareas
-	struct str_nodo *ant;		// para las 8 tareas
-	tss* tarea;
-} __attribute__((__packed__, aligned (8))) nodo;
-
-void sched_cargar_sig_tarea(nodo* n, gdt_entry gdt); //agregue esto
+void sched_cargar_sig_tarea(); //agregue esto
 void sched_guardar_contexto(tss* ts, tss* ts2); //agregue esto
 
-extern nodo* array_tareas;
+extern selector_offset sel_tarea;
 
 #endif	/* !__SCHED_H__ */
 

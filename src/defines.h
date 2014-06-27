@@ -33,8 +33,8 @@
 #define GDT_IDX_DATA_DESC_2			12
 #define GDT_IDX_VIDEO_DESC_1		13
 #define GDT_IDX_TSS_INICIAL			14
-#define GDT_IDX_TSS1				15
-#define GDT_IDX_TSS2				16
+#define GDT_IDX_TSS_ACTUAL			15
+#define GDT_IDX_TSS_ANTERIOR		16
 
 
 /* Offsets en la gdt */

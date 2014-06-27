@@ -21,6 +21,8 @@ extern game_mover
 extern game_misil
 extern game_minar
 
+
+extern sel_tarea
 extern mostrar_int
 extern mostrar_num
 global _isr32
@@ -88,7 +90,9 @@ _isr32:
     ; CODIGO DE LA INTR
 
     CALL proximo_reloj
-
+    CALL sched_proximo_indice
+    xchg bx, bx
+    jmp far [sel_tarea]     
     POPA
     IRET
 
@@ -112,7 +116,7 @@ _isr33:
 ;; Ruta de atencion de 0x52
 ;; -------------------------------------------------------------------------- ;;
 
-_isr52: ;preguntar por el numero en hexa
+_isr52:
     CLI
     PUSHA
 

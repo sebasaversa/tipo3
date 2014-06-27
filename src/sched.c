@@ -7,12 +7,15 @@
 
 #include "sched.h"
 
-unsigned int actual = 0;
+short actual = 0;
 unsigned int tss_busy = 15;
 unsigned int tss_free = 16;
 tss* tss_pointer_busy;
-tss* tss_pointer_free;
+tss* tss_pointer_anterior;
 nodo* array_tareas;
+selector_offset sel_tarea;
+
+/// INVARIANTE array_tareas APUNTA SIEMPRE AL CONTEXTO DE LA TAREA ACTUAL EN NUESTRO STRUCT ///
 
 	/* code */
 	/**
@@ -44,44 +47,52 @@ void sched_inicializar_gdt(){
 	gdt[15].limit_0_15 = (aux << 16) >> 16;
 	gdt[15].limit_16_19 = aux >> 16;
 
-	gdt[16].base_0_15 = ((unsigned int) tss_pointer_free << 16) >> 16;
-	gdt[16].base_23_16 = (unsigned int) tss_pointer_free >> 16;
+	gdt[16].base_0_15 = ((unsigned int) tss_pointer_anterior << 16) >> 16;
+	gdt[16].base_23_16 = (unsigned int) tss_pointer_anterior >> 16;
 	//16->base_31_24 = ;
 	aux = (unsigned int) (0x68 - 0x1); // 0x68 == 104 bytes
 	gdt[16].limit_0_15 = (aux << 16) >> 16;
 	gdt[16].limit_16_19 = aux >> 16;
 }
 
-void sched_inicializar_struct_tareas(){
-/*typedef struct str_nodo{
-	nodo *sig;		// para las 8 tareas
-	nodo *ant;		// para las 8 tareas
-	tss* tarea;
-} __attribute__((__packed__, aligned (8))) nodo;*/
-	int i;
-	nodo* array_tareas_temp = array_tareas;
-	for (i = 0; i < 7 ; i++)
-	{
-		*array_tareas_temp->tarea = tss_tanques[i]; //LE PUSE "*" PORQUE NODO NODO->TAREA ES *TSS Y TSS_TANQUES[I] ES TSS
-		nodo* nodo_sig =0;
-		nodo_sig->sig = 0;
-		nodo_sig->ant = array_tareas_temp;
-		nodo_sig->tarea = 0;
-		array_tareas_temp->sig = nodo_sig;
-		array_tareas_temp = array_tareas->sig;
-	}
-	array_tareas_temp->sig = array_tareas;
 
-
-}
 void sched_inicializar(){
 	sched_inicializar_gdt();
-	sched_inicializar_struct_tareas();
 }
 
-void sched_cargar_sig_tarea(nodo* n, gdt_entry gdt){}
-void sched_guardar_contexto(tss* ts, tss* ts2){} 
+void tss_copy(tss* tss_pointer_anterior, tss* contexto_tarea_previa){
+   contexto_tarea_previa = tss_pointer_anterior;
+}
 
+tss* buscar_contexto_tarea(short anterior){
+	nodo* res = array_tareas;
+	while (res->num_tarea != anterior){
+		res = res->sig;
+	}
+	return res->tarea;
+}
+
+void sched_guardar_contexto(tss* ts, tss* ts2){
+	tss* contexto_tarea_previa = buscar_contexto_tarea(array_tareas->ant->num_tarea);	
+	tss_copy(tss_pointer_anterior ,contexto_tarea_previa);
+} 
+
+
+void sched_cargar_sig_tarea(){
+	tss_pointer_anterior = buscar_contexto_tarea(array_tareas->sig->num_tarea);	// 1er paso
+	tss* tss_aux = tss_pointer_anterior; 
+	tss_pointer_anterior = tss_pointer_busy; 
+	tss_pointer_busy = tss_aux;
+	actual = array_tareas->sig->num_tarea;
+	// HACER JMP FAR EN ASM A LA NUEVA TAREA
+//	asm("jmp far %(tss_free)*(0x8)");
+
+	sel_tarea.offset = 0;
+	sel_tarea.selector = tss_free * 0x8;	
+//	__asm __volatile("jmp far %%sel_tarea" : :);
+}
+
+//b)
 unsigned short sched_proximo_indice() {
 	if (tss_busy == 15){
 		tss_busy = 16;
@@ -89,14 +100,13 @@ unsigned short sched_proximo_indice() {
 	else{
 		tss_busy = 15;
 		tss_free = 16;}
-	
 	//ya se a que tarea guardarle el contexto
-	sched_cargar_sig_tarea(array_tareas->sig, gdt[tss_free]); //cambie NODO Por ARRAY_TAREAS
-	sched_guardar_contexto(tss_pointer_busy, array_tareas->tarea);
+	sched_guardar_contexto(tss_pointer_anterior, array_tareas->tarea);
+	sched_cargar_sig_tarea(); //cambie NODO Por ARRAY_TAREAS
 	if (array_tareas->sig != 0)
-		actual = (unsigned int)array_tareas->sig->tarea; //AGREGUE "(unsigned int)" hay que chequear esto porque tarea es una tss
+		actual = array_tareas->sig->num_tarea; //AGREGUE "(unsigned int)" hay que chequear esto porque tarea es una tss
 	else
 		actual = 8;
 
-	return 0;
+	return 0; 
 }

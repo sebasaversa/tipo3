@@ -53,6 +53,16 @@ typedef struct str_tss {
     unsigned short  iomap;
 } __attribute__((__packed__, aligned (8))) tss;
 
+typedef struct str_nodo{
+    struct str_nodo *sig;       // para las 8 tareas
+    struct str_nodo *ant;       // para las 8 tareas
+    tss* tarea;
+    short num_tarea;
+} __attribute__((__packed__, aligned (8))) nodo;
+
+extern nodo* array_tareas;
+
+
 extern tss tss_inicial;
 extern tss tss_idle;
 
@@ -60,7 +70,7 @@ extern tss tss_tanques[];
 extern tss tss_next_1;
 extern tss tss_next_2;
 extern tss* tss_pointer_busy;
-extern tss* tss_pointer_free;
+extern tss* tss_pointer_anterior;
 extern unsigned int* area_libre;
 
 void tss_inicializar();

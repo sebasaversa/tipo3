@@ -16,6 +16,7 @@ extern pintarTablero
 extern deshabilitar_pic
 extern resetear_pic
 extern habilitar_pic
+;extern sel_tarea
 global start
 
 
@@ -113,21 +114,21 @@ start:
     CALL habilitar_pic
     STI
     ; Inicializar tss
+;    xchg bx, bx
     CALL tss_inicializar
     ; Inicializar tss de la tarea Idle
     
     ; Inicializar tss de las tanques
     
     ; Inicializar el scheduler
-    xor eax, eax
     MOV AX, 14*(0x8)
-    xchg bx, bx
+;    xchg bx, bx
     LTR AX
 
     ; Inicializar la IDT
     
     ; Inicializar Game
-    
+;    jmp far    
     ; Cargar IDT
     
     ; Configurar controlador de interrupciones
