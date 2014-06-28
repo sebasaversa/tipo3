@@ -29,7 +29,6 @@ void tss_inicializar_tarea_idle()
 	gdt[GDT_IDX_TSS_ACTUAL].base_0_15 = ((unsigned int)&tss_idle << 16) >> 16;
 	gdt[GDT_IDX_TSS_ACTUAL].base_23_16 = (unsigned int)&tss_idle >> 16;
 	//GDT_IDX_TSS_ACTUAL->base_31_24 = ;
-	unsigned int aux = (unsigned int) (0x0FFF);
 	gdt[GDT_IDX_TSS_ACTUAL].limit_0_15 = 0x67;
 	gdt[GDT_IDX_TSS_ACTUAL].limit_16_19 = 0;
 	tss_idle.cr3 = (unsigned int)0x27000;
@@ -42,15 +41,22 @@ void tss_inicializar_tarea_idle()
 void tss_inicializar_tareas_tanques()
 {	
 	int i = 0;	
-	nodo* array_tareas_tmp = array_tareas;
+
+	//... INICIALIZO LAS ENTRADAS DE LA GDT PARA LA TSS2
+	gdt[GDT_IDX_TSS_ANTERIOR].base_0_15 = ((unsigned int)&tss_next_2 << 16) >> 16;
+	gdt[GDT_IDX_TSS_ANTERIOR].base_23_16 = (unsigned int)&tss_next_2 >> 16;
+	//GDT_IDX_TSS_ANTERIOR->base_31_24 = ;
+	gdt[GDT_IDX_TSS_ANTERIOR].limit_0_15 = 0x67;
+	gdt[GDT_IDX_TSS_ANTERIOR].limit_16_19 = 0;
+	
 	for (i = 0; i < CANT_TANQUES; i++){
 		dameMemoriaNivel0();
 		tss_tanques[i].cr3 = (unsigned int) (0x27000 + i*0x2000);
 		tss_tanques[i].eip = (unsigned int) 0x800000;
 		tss_tanques[i].eflags = (unsigned int) 0x0000202;
-		tss_tanques[i].ebp = tss_tanques[i].eip + 4096;	
+		tss_tanques[i].ebp = tss_tanques[i].eip + 0x2000;	
 		tss_tanques[i].esp = tss_tanques[i].ebp;
-		tss_tanques[i].esp0 = (unsigned int) (area_libre + 0x1000);
+		tss_tanques[i].esp0 = (unsigned int) (area_libre + 0x2000);
 
 		//inicializar los selectores de segmento que nos dijo marco
 		array_tareas->sig 		= 0;
@@ -68,6 +74,7 @@ void tss_inicializar_tareas_tanques()
 			array_tareas = array_tareas->sig;
 		}
 	}
+	nodo* array_tareas_tmp = array_tareas;
 	array_tareas->sig = array_tareas_tmp;
 	array_tareas_tmp->ant = array_tareas;
 	array_tareas = array_tareas->sig;

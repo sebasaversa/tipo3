@@ -113,8 +113,8 @@ start:
     CALL resetear_pic
     CALL habilitar_pic
     STI
+  
     ; Inicializar tss
-;    xchg bx, bx
     CALL tss_inicializar
     ; Inicializar tss de la tarea Idle
     
@@ -122,7 +122,7 @@ start:
     
     ; Inicializar el scheduler
     MOV AX, 14*(0x8)
-;    xchg bx, bx
+    xchg bx, bx
     LTR AX
 
     ; Inicializar la IDT
