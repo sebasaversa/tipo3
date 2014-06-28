@@ -16,7 +16,7 @@ extern pintarTablero
 extern deshabilitar_pic
 extern resetear_pic
 extern habilitar_pic
-;extern sel_tarea
+extern gdt_inic_tss
 global start
 
 
@@ -115,6 +115,7 @@ start:
     STI
   
     ; Inicializar tss
+    CALL gdt_inic_tss
     CALL tss_inicializar
     ; Inicializar tss de la tarea Idle
     

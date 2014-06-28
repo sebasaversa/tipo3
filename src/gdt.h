@@ -38,5 +38,7 @@ typedef struct str_gdt_entry {
 extern gdt_entry gdt[];
 extern gdt_descriptor GDT_DESC;
 
+gdt_entry define_gdt_tss(unsigned int dir_tarea);
+void gdt_inic_tss();
 
 #endif  /* !__GDT_H__ */
