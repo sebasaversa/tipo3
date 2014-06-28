@@ -14,6 +14,7 @@ tss tss_inicial;
 tss tss_idle;
 
 tss tss_tanques[CANT_TANQUES];
+
 //nodo* array_tareas;
 /*
 void tss_inicializar_tarea_idle();
@@ -74,6 +75,7 @@ void tss_inicializar_tareas_tanques()
 			array_tareas = array_tareas->sig;
 		}
 	}
+
 	nodo* array_tareas_tmp = array_tareas;
 	array_tareas->sig = array_tareas_tmp;
 	array_tareas_tmp->ant = array_tareas;
