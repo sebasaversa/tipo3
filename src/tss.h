@@ -71,7 +71,7 @@ extern tss tss_next_1;
 extern tss tss_next_2;
 extern tss* tss_pointer_busy;
 extern tss* tss_pointer_anterior;
-extern unsigned int* area_libre;
+//extern unsigned int* area_libre;
 
 void tss_inicializar();
 void tss_inicializar_tarea_idle();

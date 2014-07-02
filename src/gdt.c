@@ -5,7 +5,7 @@
   definicion de la tabla de descriptores globales
 */
 
-#include "gdt.h"
+//#include "gdt.h"
 #include "tss.h"
 
 tss tss_inicial;

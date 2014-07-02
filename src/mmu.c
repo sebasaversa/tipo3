@@ -7,6 +7,8 @@
 
 #include "mmu.h"
 
+unsigned int* area_libre = (unsigned int*)0x100000;
+
 void dameMemoria(){
 	area_libre += (unsigned int) 0x6000;
 }

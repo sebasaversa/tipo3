@@ -6,7 +6,7 @@
 */
 
 #include "sched.h"
-#include "tss.h"
+//#include "tss.h"
 short actual = 0;
 unsigned int tss_busy = 15;
 unsigned int tss_free = 16;

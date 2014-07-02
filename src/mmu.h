@@ -16,9 +16,6 @@
 
 #define MMU_COUNT 1024
 
-
-unsigned int* area_libre = (unsigned int*)0x100000;
-
 typedef struct str_mmu_descriptor {
     unsigned short  mmu_length;
     unsigned int    mmu_addr;
