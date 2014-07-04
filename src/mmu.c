@@ -87,7 +87,9 @@ void mmu_inicializar_dir_tarea(){
 
 	
 	mmu_entry* pd = (mmu_entry*)(area_libre);
+	dameMemoriaNivel0();
 	mmu_entry* pt = (mmu_entry*)(area_libre);
+	dameMemoriaNivel0();
 	pt += 1024;
 	mmu_entry* ptAux = pt;
 	unsigned int mem = (unsigned int) 0x000000;
@@ -142,12 +144,13 @@ void mmu_inicializar(){
 	for(i = 0; i < 8; i++){
 		mmu_inicializar_dir_tarea(); // creo el page directory
 		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //escribo la primer pagina de la tarea en la memoria fisica
+		dameMemoriaNivel0();
 		codTarea += (unsigned int) 0x1000; //voy a la siguiente pagina de la tarea
 		dirVirtual += (unsigned int) 0x1000; //voy a la siguiente direccion fisica libre para copiar la nueva pagina
 		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //mapeo la segunda pagina de la tarea en la memoria fisica
 		codTarea += (unsigned int) 0x1000; //voy a la siguiente tarea
 		dirVirtual += (unsigned int) 0x1000; // voy al siguiente espacio libre para copiar la nueva tarea
-		dameMemoria(); //pido memoria para la siguiente tarea
+		dameMemoriaNivel0(); //pido memoria para la siguiente tarea
 	}
 }    
 

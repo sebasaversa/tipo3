@@ -130,6 +130,7 @@ start:
     
     ; Inicializar Game
 ;    jmp far    
+    jmp 15*(0x8):0
     ; Cargar IDT
     
     ; Configurar controlador de interrupciones

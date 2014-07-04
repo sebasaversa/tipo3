@@ -27,16 +27,22 @@ unsigned int tss_get_cr3(unsigned int id);
 
 void tss_inicializar_tarea_idle()
 {
-	gdt[GDT_IDX_TSS_ACTUAL].base_0_15 = ((unsigned int)&tss_idle << 16) >> 16;
-	gdt[GDT_IDX_TSS_ACTUAL].base_23_16 = (unsigned int)&tss_idle >> 16;
+	gdt[GDT_IDX_TSS_ACTUAL].base_0_15 = ((unsigned int)&tss_next_1 << 16) >> 16;
+	gdt[GDT_IDX_TSS_ACTUAL].base_23_16 = (unsigned int)&tss_next_1 >> 16;
 	//GDT_IDX_TSS_ACTUAL->base_31_24 = ;
 	gdt[GDT_IDX_TSS_ACTUAL].limit_0_15 = 0x67;
 	gdt[GDT_IDX_TSS_ACTUAL].limit_16_19 = 0;
-	tss_idle.cr3 = (unsigned int)0x27000;
-	tss_idle.eip = (unsigned int)0x800000;
-	tss_idle.eflags = (unsigned int)0x0000202;
-	tss_idle.ebp = 0x26000;
-	tss_idle.esp = 0x26000;
+	tss_next_1.cr3 = (unsigned int)0x27000;
+	tss_next_1.eip = (unsigned int)0x8000000; // esta es la virtual de cada tarea que luego se mapea a una fisica distinta no?
+	tss_next_1.eflags = (unsigned int)0x0000202;
+	tss_next_1.ebp = 0x27000;
+	tss_next_1.esp = 0x27000;
+	tss_next_1.es = 11*(0x8);
+    tss_next_1.cs = 9*(0x8);
+    tss_next_1.ss = 11*(0x8);
+    tss_next_1.ds = 11*(0x8);
+    tss_next_1.fs = 11*(0x8);
+    tss_next_1.gs = 11*(0x8);
 }
 
 void tss_inicializar_tareas_tanques()
@@ -51,14 +57,15 @@ void tss_inicializar_tareas_tanques()
 	gdt[GDT_IDX_TSS_ANTERIOR].limit_16_19 = 0;
 */	
 	for (i = 0; i < CANT_TANQUES; i++){
-		dameMemoriaNivel0();
-		tss_tanques[i].cr3 = (unsigned int) (0x27000 + i*0x2000);
-		tss_tanques[i].eip = (unsigned int) 0x800000;
+		//breakpoint();
+		tss_tanques[i].cr3 = (unsigned int) (0x100000 + i*0x1000);
+		tss_tanques[i].eip = (unsigned int) 0x8000000;
 		tss_tanques[i].eflags = (unsigned int) 0x0000202;
 		tss_tanques[i].ebp = tss_tanques[i].eip + 0x2000;	
 		tss_tanques[i].esp = tss_tanques[i].ebp;
 		tss_tanques[i].esp0 = (unsigned int) (area_libre + 0x2000);
-
+		dameMemoriaNivel0();
+		dameMemoriaNivel0();
 		//inicializar los selectores de segmento que nos dijo marco
 		array_tareas->sig 		= 0;
 		array_tareas->ant 		= 0;
