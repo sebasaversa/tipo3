@@ -43,7 +43,7 @@ void inicializar_mmu();
 void dameMemoria();
 void dameMemoriaNivel0();
 
-extern void dameMemoriaNivel0() ;
+extern void dameMemoriaKPaginas() ;
 extern unsigned int* area_libre;
 #endif	/* !__MMU_H__ */
 

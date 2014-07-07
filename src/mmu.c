@@ -9,12 +9,8 @@
 
 unsigned int* area_libre = (unsigned int*)0x100000;
 
-void dameMemoria(){
-	area_libre += (unsigned int) 0x6000;
-}
-
-void dameMemoriaNivel0(){
-	area_libre += (unsigned int) 0x1000;
+void dameMemoriaKPaginas(int i){
+	area_libre += (unsigned int) (i*0x1000);
 }
 
 void mmu_inicializar_dir_kernel() {
@@ -55,7 +51,7 @@ void mmu_inicializar_dir_kernel() {
 	{
 		pd[i].base_0_20 = ((unsigned int) pt) >> 12;
 		pd[i].p = 0x01;
-		pt += 1024;
+		pt += 0x400;
 	}
 	pt = ptAux;
 	
@@ -66,7 +62,7 @@ void mmu_inicializar_dir_kernel() {
 			//*pt = aux;
 			pt[1024*i + j].base_0_20 = mem >> 12;
 			pt[1024*i + j].p =  0x01;
-			mem += 4096;
+			mem += 0x1000;
 		}	
 //		pt += 0x1000;
 	}
@@ -75,24 +71,23 @@ void mmu_inicializar_dir_kernel() {
 	{
 		pt[1024*3 + i].base_0_20 = mem >> 12;
 		pt[1024*3 + i].p =  0x01;
-		mem += 4096;	
+		mem += 0x1000;	
 	}
  	
  }
 	//////////////////////////////////////////////////
-	////////////////// IDENTITY MAPPING //////////////
+	///////////// TERMINA IDENTITY MAPPING ///////////
 	//////////////////////////////////////////////////
 
 void mmu_inicializar_dir_tarea(){
 
 	
 	mmu_entry* pd = (mmu_entry*)(area_libre);
-	dameMemoriaNivel0();
+	dameMemoriaKPaginas(1);
 	mmu_entry* pt = (mmu_entry*)(area_libre);
-	dameMemoriaNivel0();
-	pt += 1024;
+	dameMemoriaKPaginas(5);
 	mmu_entry* ptAux = pt;
-	unsigned int mem = (unsigned int) 0x000000;
+	unsigned int mem = (unsigned int) 0x0;
 	
 	mmu_entry aux = (mmu_entry) {
 
@@ -130,46 +125,26 @@ void mmu_inicializar_dir_tarea(){
 		{
 			pt[1024*i + j].base_0_20 = mem >> 12;
 			pt[1024*i + j].p =  0x01;
-			mem += 4096;
+			mem += 0x1000;
 		}	
 	}
-	
-
 }
 
-void mmu_inicializar(){
-	short i;
-	unsigned int codTarea = (unsigned int) 0x10000; //esta es la direccion de la primer pagina de la primer tarea
-	unsigned int dirVirtual = (unsigned int) 0x8000000; //esta es la direccion virtual desde donde arranco a copiar las tareas
-	for(i = 0; i < 8; i++){
-		mmu_inicializar_dir_tarea(); // creo el page directory
-		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //escribo la primer pagina de la tarea en la memoria fisica
-		dameMemoriaNivel0();
-		codTarea += (unsigned int) 0x1000; //voy a la siguiente pagina de la tarea
-		dirVirtual += (unsigned int) 0x1000; //voy a la siguiente direccion fisica libre para copiar la nueva pagina
-		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //mapeo la segunda pagina de la tarea en la memoria fisica
-		codTarea += (unsigned int) 0x1000; //voy a la siguiente tarea
-		dirVirtual += (unsigned int) 0x1000; // voy al siguiente espacio libre para copiar la nueva tarea
-		dameMemoriaNivel0(); //pido memoria para la siguiente tarea
-	}
-}    
-
-
 void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisica, unsigned int attrs){
-	
+
 	mmu_entry* pd = (mmu_entry*) (cr3 >> 12);
 	unsigned int table = 0;
 	unsigned int ptIndex = 0;
 	unsigned int pdIndex = virtual >> 22; //saco el offset del page
 	unsigned int index = virtual;
-	pd += pdIndex; //me muevo dentro del page
+	pd += pdIndex * 4 + 3; //me muevo dentro del page
 	table = pd->base_0_20; 
-	pd = (mmu_entry*)table; //apunto al table que corresponde
+	pd = (mmu_entry*)table; //apunto al page table que corresponde
 	ptIndex = virtual << 10;
 	ptIndex = ptIndex >> 22; //busco el index de la table
-	pd += ptIndex; //me muevo dentro de la table q estoy
+	pd += ptIndex * 4 + 3; //me muevo dentro de la table q estoy
 	table = pd->base_0_20; 
-	pd = (mmu_entry*)table; //voy al bloque de direccion que busco
+	pd = (mmu_entry*)table; //voy al bloque de direccion fisica de 4k que busco
 	index = index << 20;
 	index = index >> 20;
 	pd += index; //me muevo dentro del bloque de 4k de memoria a donde quiero copiar el dato
@@ -179,6 +154,24 @@ void mmu_mapear_pagina(unsigned int virtual, unsigned int cr3, unsigned int fisi
 
 	tlbflush();
 }
+
+void mmu_inicializar(){
+	short i;
+	unsigned int codTarea = (unsigned int) 0x10000; //esta es la direccion de la primer pagina de la primer tarea
+	unsigned int dirVirtual = (unsigned int) 0x8000000; //esta es la direccion virtual desde donde arranco a copiar las tareas
+	for(i = 0; i < 8; i++){
+		unsigned int* cr3 = area_libre; //guardo la direccion del PD de esta tarea
+		mmu_inicializar_dir_tarea(); // creo el page directory
+		mmu_mapear_pagina(dirVirtual, (unsigned int) cr3, codTarea, 0); //escribo la primer pagina de la tarea en la memoria fisica
+	//	dameMemoriaNivel0();
+		codTarea += (unsigned int) 0x1000; //voy a la siguiente pagina de la tarea
+		dirVirtual += (unsigned int) 0x1000; //voy a la siguiente direccion fisica libre para copiar la nueva pagina
+		mmu_mapear_pagina(dirVirtual, *area_libre, codTarea, 0); //mapeo la segunda pagina de la tarea en la memoria fisica
+		codTarea += (unsigned int) 0x1000; //voy a la siguiente tarea
+		dirVirtual += (unsigned int) 0x1000; // voy al siguiente espacio libre para copiar la nueva tarea
+	//	dameMemoriaNivel0(); //pido memoria para la siguiente tarea
+	}
+}    
 
 void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){
 	mmu_entry* pd = (mmu_entry*) (cr3 >> 12);

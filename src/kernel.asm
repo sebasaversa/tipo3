@@ -69,7 +69,8 @@ start:
     modoProtegido:
         ;CODIGO
     ;xchg bx, bx
-    ;imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 0, 0    
+;    imprimir_texto_mp iniciando_mp_msg, iniciando_mp_len, 0x07, 0, 0    
+    
     ; Establecer selectores de segmentos
     XOR EAX, EAX
     MOV AX, 1011000b ;1011b == 11d (index de la GDT) | 0 (0 -> GDT / 1 -> LDT) | 00 (NIVEL DE PRIVILEGIO)
@@ -106,9 +107,6 @@ start:
     OR EAX, 0x80000000 ;habilitamos paginacion
     MOV CR0, EAX
     
-    ;/////////// PAGINACION //////////    
-    ;/////////// PAGINACION //////////    
-    ;/////////// PAGINACION //////////    
     CALL deshabilitar_pic
     CALL resetear_pic
     CALL habilitar_pic
@@ -117,20 +115,22 @@ start:
     ; Inicializar tss
     CALL gdt_inic_tss
     CALL tss_inicializar
+    
     ; Inicializar tss de la tarea Idle
     
     ; Inicializar tss de las tanques
     
     ; Inicializar el scheduler
     MOV AX, 14*(0x8)
-    xchg bx, bx
     LTR AX
 
     ; Inicializar la IDT
     
     ; Inicializar Game
 ;    jmp far    
-    jmp 15*(0x8):0
+    xchg bx, bx
+    jmp 15*(0x8):0x0
+    
     ; Cargar IDT
     
     ; Configurar controlador de interrupciones

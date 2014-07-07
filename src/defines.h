@@ -27,11 +27,11 @@
 /* Indices en la gdt */
 /* -------------------------------------------------------------------------- */
 #define GDT_IDX_NULL_DESC           0
-#define GDT_IDX_CODE_DESC_1			9
-#define GDT_IDX_CODE_DESC_2			10
-#define GDT_IDX_DATA_DESC_1			11
-#define GDT_IDX_DATA_DESC_2			12
-#define GDT_IDX_VIDEO_DESC_1		13
+#define GDT_IDX_CODE_DESC_0			9
+#define GDT_IDX_CODE_DESC_3			10
+#define GDT_IDX_DATA_DESC_0			11
+#define GDT_IDX_DATA_DESC_3			12
+#define GDT_IDX_VIDEO_DESC			13
 #define GDT_IDX_TSS_INICIAL			14
 #define GDT_IDX_TSS_ACTUAL			15
 #define GDT_IDX_TSS_ANTERIOR		16

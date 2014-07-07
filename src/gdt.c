@@ -9,6 +9,8 @@
 #include "tss.h"
 
 tss tss_inicial;
+tss tss_next1;
+tss tss_next2;
 
 gdt_entry gdt[GDT_COUNT] = {
     /* Descriptor nulo*/
@@ -29,7 +31,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x00,           /* base[31:24]  */
     },
     
-    [GDT_IDX_CODE_DESC_1] = (gdt_entry) {
+    [GDT_IDX_CODE_DESC_0] = (gdt_entry) {
         (unsigned short)    0xDCFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
         (unsigned char)     0x00,           /* base[23:16]  */
@@ -45,7 +47,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x00,           /* base[31:24]  */
     },
     
-    [GDT_IDX_CODE_DESC_2] = (gdt_entry) {
+    [GDT_IDX_CODE_DESC_3] = (gdt_entry) {
         (unsigned short)    0xDCFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
         (unsigned char)     0x00,           /* base[23:16]  */
@@ -60,7 +62,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-    [GDT_IDX_DATA_DESC_1] = (gdt_entry) {
+    [GDT_IDX_DATA_DESC_0] = (gdt_entry) {
         (unsigned short)    0xDCFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
         (unsigned char)     0x00,           /* base[23:16]  */
@@ -75,7 +77,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-    [GDT_IDX_DATA_DESC_2] = (gdt_entry) {
+    [GDT_IDX_DATA_DESC_3] = (gdt_entry) {
         (unsigned short)    0xDCFF,         /* limit[0:15]  */
         (unsigned short)    0x0000,         /* base[0:15]   */
         (unsigned char)     0x00,           /* base[23:16]  */
@@ -90,7 +92,7 @@ gdt_entry gdt[GDT_COUNT] = {
         (unsigned char)     0x01,           /* g            */
         (unsigned char)     0x00,           /* base[31:24]  */
     },
-    [GDT_IDX_VIDEO_DESC_1] = (gdt_entry) {
+    [GDT_IDX_VIDEO_DESC] = (gdt_entry) {
         (unsigned short)    0x1F3F,         /* limit[0:15]  */
         (unsigned short)    0x8000,         /* base[0:15]   */
         (unsigned char)     0x000B,         /* base[23:16]  */
@@ -118,16 +120,16 @@ gdt_descriptor GDT_DESC = {
 // ------------------------------------------
 void gdt_inic_tss() {
     gdt[GDT_IDX_TSS_INICIAL] = define_gdt_tss((unsigned int)&tss_inicial);
-    gdt[GDT_IDX_TSS_ACTUAL] = define_gdt_tss((unsigned int)&tss_next_1);
-    gdt[GDT_IDX_TSS_ANTERIOR] = define_gdt_tss((unsigned int)&tss_next_2);
+    gdt[GDT_IDX_TSS_ACTUAL] = define_gdt_tss((unsigned int)&tss_next1);
+    gdt[GDT_IDX_TSS_ANTERIOR] = define_gdt_tss((unsigned int)&tss_next2);
 };
 
 gdt_entry define_gdt_tss(unsigned int dir_tarea) {
     return (gdt_entry) {
-        .limit_0_15     = 0x0067,
+        .limit_0_15     = 0x67,
         .base_0_15      = dir_tarea & 0xFFFF,
         .base_23_16     = (dir_tarea >> 16) & 0xFF,
-        .type           = 0x09,
+        .type           = 0x09, // 0x9 = 1001
         .s              = 0x00,
         .dpl            = 0x00,
         .p              = 0x01,
