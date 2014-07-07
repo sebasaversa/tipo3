@@ -17,6 +17,8 @@ extern deshabilitar_pic
 extern resetear_pic
 extern habilitar_pic
 extern gdt_inic_tss
+extern sched_inicializar
+
 global start
 
 
@@ -121,6 +123,7 @@ start:
     ; Inicializar tss de las tanques
     
     ; Inicializar el scheduler
+    CALL sched_inicializar
     MOV AX, 14*(0x8)
     LTR AX
 

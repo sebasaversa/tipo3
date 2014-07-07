@@ -23,6 +23,6 @@ void sched_cargar_sig_tarea(); //agregue esto
 void sched_guardar_contexto(tss* ts, tss* ts2); //agregue esto
 
 extern selector_offset sel_tarea;
-
+extern void sched_inicializar();
 #endif	/* !__SCHED_H__ */
 
