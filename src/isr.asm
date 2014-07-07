@@ -92,6 +92,7 @@ _isr32:
     CALL proximo_reloj
 ;    xchg bx, bx
     CALL sched_proximo_indice
+    xchg bx, bx
     jmp far [sel_tarea]     
     POPAD
     IRET
