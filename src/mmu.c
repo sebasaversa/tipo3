@@ -51,7 +51,7 @@ void mmu_inicializar_dir_kernel() {
 	{
 		pd[i].base_0_20 = ((unsigned int) pt) >> 12;
 		pd[i].p = 0x01;
-		pt += 0x400;
+		pt += 0x1000;
 	}
 	pt = ptAux;
 	

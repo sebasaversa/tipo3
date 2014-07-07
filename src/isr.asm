@@ -85,15 +85,15 @@ ISR 19
 ;; -------------------------------------------------------------------------- ;;
 _isr32:
     CLI
-    PUSHA
+    PUSHAD
     CALL fin_intr_pic1
     ; CODIGO DE LA INTR
 
     CALL proximo_reloj
-    CALL sched_proximo_indice
 ;    xchg bx, bx
+    CALL sched_proximo_indice
     jmp far [sel_tarea]     
-    POPA
+    POPAD
     IRET
 
 ;;

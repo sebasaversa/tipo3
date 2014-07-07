@@ -20,7 +20,6 @@ void tss_inicializar_tarea_idle()
 {
 	gdt[GDT_IDX_TSS_ACTUAL] = define_gdt_tss((unsigned int)&tss_next_1);
 	tss_next_1 = tss_idle;
-	breakpoint();
 	tss_next_1.cr3 		= (unsigned int)0x27000;
 	tss_next_1.eip 		= (unsigned int)0x20000; // esta es la virtual de cada tarea que luego se mapea a una fisica distinta no?
 	tss_next_1.eflags 	= (unsigned int)0x0000202;
