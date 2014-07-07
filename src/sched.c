@@ -77,6 +77,9 @@ tss* buscar_contexto_tarea(short anterior){
 	while (res->num_tarea != anterior){
 		res = res->sig;
 	}
+	if ( res->num_tarea == 8){
+		res = res->sig;
+	}
 	return res->tarea;
 }
 
