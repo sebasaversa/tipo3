@@ -93,12 +93,12 @@ void sched_cargar_sig_tarea(){
 	tss* tss_aux;
 	if (tss_busy == 16){
 		tss_aux = buscar_contexto_tarea(array_tareas->sig->num_tarea);	// 1er paso
-		tss_next_1 = tss_next_2; 
+//		tss_next_1 = tss_next_2; 
 		tss_next_2 = *tss_aux;
 		actual = array_tareas->sig->num_tarea;
 	}else{
 		tss_aux = buscar_contexto_tarea(array_tareas->sig->num_tarea);	// 1er paso
-		tss_next_2 = tss_next_1; 
+//		tss_next_2 = tss_next_1; 
 		tss_next_1 = *tss_aux;
 		actual = array_tareas->sig->num_tarea;
 	}
