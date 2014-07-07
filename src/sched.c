@@ -80,7 +80,7 @@ tss* buscar_contexto_tarea(short anterior){
 	return res->tarea;
 }
 
-void sched_guardar_contexto(unsigned int free_tss_gdt_index, tss* ts2){
+void sched_guardar_contexto(unsigned int free_tss_gdt_index){
 	tss* contexto_tarea_previa = buscar_contexto_tarea(array_tareas->num_tarea);	
 	tss* contexto_tarea_previa_en_gdt = (tss*) (gdt[free_tss_gdt_index].base_31_24*1000 +
 												gdt[free_tss_gdt_index].base_23_16*100 +
@@ -90,10 +90,17 @@ void sched_guardar_contexto(unsigned int free_tss_gdt_index, tss* ts2){
 
 
 void sched_cargar_sig_tarea(){
-	tss_next_2 = *buscar_contexto_tarea(array_tareas->sig->num_tarea);	// 1er paso
-	tss* tss_aux = &tss_next_2; 
-	tss_next_2 = tss_next_1; 
-	tss_next_1 = *tss_aux;
+	tss tss_actual  = tss_next_1;
+	tss tss_proxima = tss_next_2;
+	if (tss_busy == 16){
+		tss_actual  = tss_next_2;
+		tss_proxima = tss_next_1;
+	}
+	
+	tss_proxima = *buscar_contexto_tarea(array_tareas->sig->num_tarea);	// 1er paso
+	tss* tss_aux = &tss_proxima; 
+	tss_proxima = tss_actual; 
+	tss_actual = *tss_aux;
 	actual = array_tareas->sig->num_tarea;
 	// HACER JMP FAR EN ASM A LA NUEVA TAREA
 //	asm("jmp far %(tss_free)*(0x8)");
@@ -112,14 +119,12 @@ unsigned short sched_proximo_indice() {
 		tss_busy = 15;
 		tss_free = 16;}
 	////ya se a que tarea guardarle el contexto
-	sched_guardar_contexto(tss_busy, array_tareas->tarea);
-	
+	sched_guardar_contexto(tss_busy);
 	sched_cargar_sig_tarea(); //cambie NODO Por ARRAY_TAREAS
 	breakpoint();
-	if (array_tareas->sig != 0)
-		actual = array_tareas->sig->num_tarea; //AGREGUE "(unsigned int)" hay que chequear esto porque tarea es una tss
-	else
+	if (array_tareas->sig != 0) // chequeo si no hay mas tareas para ejecutar
+		actual = array_tareas->sig->num_tarea; // si hay, ejecuto la proxima
+	else						// si no hay, ejecuto la idle que tiene id = 8
 		actual = 8;
-
 	return 0; 
 }
