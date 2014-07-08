@@ -33,8 +33,8 @@ void tss_inicializar_tarea_idle()
     tss_next_1.gs 		= 11*(0x8);
 
 	tss_next_2 = tss_idle;
-	tss_next_2.cr3 		= (unsigned int)0x27000;
-	tss_next_2.eip 		= (unsigned int)0x20000; // esta es la virtual de cada tarea que luego se mapea a una fisica distinta no?
+	tss_next_2.cr3 		= cr3_array[0];
+	tss_next_2.eip 		= (unsigned int)0x10000; // esta es la virtual de cada tarea que luego se mapea a una fisica distinta no?
 	tss_next_2.eflags 	= (unsigned int)0x0000202;
 	tss_next_2.ebp 		= 0x27000;
 	tss_next_2.esp 		= 0x27000;
@@ -60,7 +60,7 @@ void tss_inicializar_tareas_tanques()
 */	
 	for (i = 0; i < CANT_TANQUES; i++){
 		//breakpoint();
-		tss_tanques[i].cr3 = (unsigned int) (0x100000 + i*0x1000);
+		tss_tanques[i].cr3 = cr3_array[i];
 		tss_tanques[i].eip = (unsigned int) 0x8000000;
 		tss_tanques[i].eflags = (unsigned int) 0x0000202;
 		tss_tanques[i].ebp = tss_tanques[i].eip + 0x2000;	

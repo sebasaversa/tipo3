@@ -8,6 +8,7 @@
 #include "mmu.h"
 
 unsigned int* area_libre = (unsigned int*)0x100000;
+unsigned int cr3_array[8];
 
 void dameMemoriaKPaginas(int i){
 	area_libre += (unsigned int) (i*0x1000);
@@ -161,6 +162,7 @@ void mmu_inicializar(){
 	unsigned int dirVirtual = (unsigned int) 0x8000000; //esta es la direccion virtual desde donde arranco a copiar las tareas
 	for(i = 0; i < 8; i++){
 		unsigned int* cr3 = area_libre; //guardo la direccion del PD de esta tarea
+		cr3_array[i] = (unsigned int)cr3;
 		mmu_inicializar_dir_tarea(); // creo el page directory
 		mmu_mapear_pagina(dirVirtual, (unsigned int) cr3, codTarea, 0); //escribo la primer pagina de la tarea en la memoria fisica
 	//	dameMemoriaNivel0();
@@ -171,6 +173,7 @@ void mmu_inicializar(){
 		dirVirtual += (unsigned int) 0x1000; // voy al siguiente espacio libre para copiar la nueva tarea
 	//	dameMemoriaNivel0(); //pido memoria para la siguiente tarea
 	}
+
 }    
 
 void mmu_unmapear_pagina(unsigned int virtual, unsigned int cr3){

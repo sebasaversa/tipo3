@@ -45,6 +45,7 @@ void dameMemoriaNivel0();
 
 extern void dameMemoriaKPaginas() ;
 extern unsigned int* area_libre;
+extern unsigned int cr3_array[8];
 #endif	/* !__MMU_H__ */
 
 
