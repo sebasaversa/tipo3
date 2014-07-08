@@ -36,8 +36,8 @@ void tss_inicializar_tarea_idle()
 	tss_next_2.cr3 		= cr3_array[0];
 	tss_next_2.eip 		= (unsigned int)0x10000; // esta es la virtual de cada tarea que luego se mapea a una fisica distinta no?
 	tss_next_2.eflags 	= (unsigned int)0x0000202;
-	tss_next_2.ebp 		= 0x27000;
-	tss_next_2.esp 		= 0x27000;
+	tss_next_2.ebp 		= tss_next_2.eip + 0x2000;
+	tss_next_2.esp 		= tss_next_2.ebp;
     tss_next_2.cs 		=  9*(0x8);
 	tss_next_2.es 		= 11*(0x8);
     tss_next_2.ss 		= 11*(0x8);
@@ -61,13 +61,12 @@ void tss_inicializar_tareas_tanques()
 	for (i = 0; i < CANT_TANQUES; i++){
 		//breakpoint();
 		tss_tanques[i].cr3 = cr3_array[i];
-		tss_tanques[i].eip = (unsigned int) 0x8000000;
+		tss_tanques[i].eip = (unsigned int) 0x10000 + i*0x2000;
 		tss_tanques[i].eflags = (unsigned int) 0x0000202;
 		tss_tanques[i].ebp = tss_tanques[i].eip + 0x2000;	
 		tss_tanques[i].esp = tss_tanques[i].ebp;
-		tss_tanques[i].esp0 = (unsigned int) (area_libre + 0x2000);
-//		dameMemoriaNivel0();
-//		dameMemoriaNivel0();
+		tss_tanques[i].esp0 = (unsigned int) (area_libre + 0x1000);
+		dameMemoriaKPaginas(1);
 		//inicializar los selectores de segmento que nos dijo marco
 		array_tareas->sig 		= 0;
 		array_tareas->ant 		= 0;
