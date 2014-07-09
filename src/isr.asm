@@ -93,8 +93,11 @@ _isr32:
 ;    xchg bx, bx
     CALL sched_proximo_indice
     xchg bx, bx
-    jmp far [sel_tarea]     
+    mov [sched_tarea_selector], ax
+    jmp far [sched_tarea_offset]
+  ;  jmp 15*(0x8):0x0
     POPAD
+    STI
     IRET
 
 ;;
@@ -122,9 +125,9 @@ _isr52:
     PUSHA
 
     MOV EAX, 0x42
-
+    xchg bx, bx
     POPA
-    STI
+ ;   STI
     IRET
 
 ;;

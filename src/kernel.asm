@@ -18,7 +18,8 @@ extern resetear_pic
 extern habilitar_pic
 extern gdt_inic_tss
 extern sched_inicializar
-
+extern TAREA_ACTUAL
+extern TAREA_ANTERIOR
 global start
 
 
@@ -123,6 +124,8 @@ start:
     ; Inicializar tss de las tanques
     
     ; Inicializar el scheduler
+    MOV word[TAREA_ACTUAL], 0 ; Digo que empieza la idle
+    MOV word[TAREA_ANTERIOR], 0 ; Digo que empieza la idle
     CALL sched_inicializar
     MOV AX, 14*(0x8)
     LTR AX
@@ -131,8 +134,9 @@ start:
     
     ; Inicializar Game
 ;    jmp far    
-;    xchg bx, bx
+    xchg bx, bx
     jmp 15*(0x8):0x0
+    ;jmp 16*(0x8):0x0
     
     ; Cargar IDT
     

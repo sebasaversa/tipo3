@@ -11,18 +11,16 @@
 #include "screen.h"
 #include "tss.h"
 
-typedef struct str_selector_offset{
-    int offset;       
-    short selector;
-} __attribute__((__packed__)) selector_offset;
-
-
 unsigned short sched_proximo_indice();
 
-void sched_cargar_sig_tarea(); //agregue esto
+tss* buscar_contexto_tarea(short task_actual);
+tss* buscar_contexto_tarea_ant(short task_actual);
 void sched_guardar_contexto(unsigned int free_tss_gdt_index); //agregue esto
+void sched_cargar_sig_tarea(); //agregue esto
 
-extern selector_offset sel_tarea;
 extern void sched_inicializar();
+extern unsigned int TAREA_ACTUAL;
+extern unsigned int TAREA_ANTERIOR;
+
 #endif	/* !__SCHED_H__ */
 

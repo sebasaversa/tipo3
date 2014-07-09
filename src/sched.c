@@ -6,14 +6,15 @@
 */
 
 #include "sched.h"
-//#include "tss.h"
-short actual = 0;
+#include "defines.h"
+
 unsigned int tss_busy = 15;
 unsigned int tss_free = 16;
+unsigned int TAREA_ACTUAL;
+unsigned int TAREA_ANTERIOR;
 //tss* tss_pointer_busy;
 //tss* tss_pointer_anterior;
 nodo* array_tareas;
-selector_offset sel_tarea;
 
 /// INVARIANTE array_tareas APUNTA SIEMPRE AL CONTEXTO DE LA TAREA ACTUAL EN NUESTRO STRUCT ///
 
@@ -68,63 +69,78 @@ void sched_inicializar(){
 	sched_inicializar_gdt();
 }
 
-void tss_copy(tss* tss_next_2, tss* contexto_tarea_previa){
-   *contexto_tarea_previa = *tss_next_2;
+void tss_copy(tss* contexto_tarea_previa, tss* contexto_tarea_previa_en_gdt){
+   *contexto_tarea_previa = *contexto_tarea_previa_en_gdt;
 }
 
-tss* buscar_contexto_tarea(short anterior){
+tss* buscar_contexto_tarea(short task_actual){
 	nodo* res = array_tareas;
-	while (res->num_tarea != anterior){
+	while (res->num_tarea != task_actual){
 		res = res->sig;
 	}
-	if ( res->num_tarea == 8){
+	return res->sig->tarea;
+
+}
+tss* buscar_contexto_tarea_ant(short task_actual){
+	nodo* res = array_tareas;
+	while (res->num_tarea != task_actual){
 		res = res->sig;
 	}
 	return res->tarea;
+
 }
 
 void sched_guardar_contexto(unsigned int free_tss_gdt_index){
-	tss* contexto_tarea_previa = buscar_contexto_tarea(array_tareas->num_tarea);	
-	tss* contexto_tarea_previa_en_gdt = (tss*) (gdt[free_tss_gdt_index].base_31_24*1000 +
-												gdt[free_tss_gdt_index].base_23_16*100 +
-												gdt[free_tss_gdt_index].base_0_15);
-	tss_copy(contexto_tarea_previa_en_gdt ,contexto_tarea_previa);
+
+//(1) cual tengo que guardar, la free o la busy... no! la free! siempre
+//(2) donde tengo que guardar, en que cacho de memoria tengo que salvar lo que esta en la free
+//(3) copiar la papa
+	// si es la primera vez, tenemos la idle en tss1 y tss2
+	if (TAREA_ACTUAL != TAREA_ANTERIOR){ // si entra es porque ya hice al menos un cargar_sig_tarea
+		tss* contexto_tarea_previa = buscar_contexto_tarea_ant(TAREA_ANTERIOR);	
+		tss* contexto_tarea_previa_en_gdt = (tss*) ((gdt[free_tss_gdt_index].base_31_24 << 24) +
+													(gdt[free_tss_gdt_index].base_23_16 << 16) +
+													gdt[free_tss_gdt_index].base_0_15);
+		tss_copy(contexto_tarea_previa, contexto_tarea_previa_en_gdt);
+	  //tss_copy(dst, src);
+	}
 } 
 
 
 void sched_cargar_sig_tarea(){
-	tss* tss_aux;
-	if (tss_busy == 16){
-		tss_aux = buscar_contexto_tarea(array_tareas->sig->num_tarea);	// 1er paso
-//		tss_next_1 = tss_next_2; 
-		tss_next_2 = *tss_aux;
-		actual = array_tareas->sig->num_tarea;
-	}else{
-		tss_aux = buscar_contexto_tarea(array_tareas->sig->num_tarea);	// 1er paso
-//		tss_next_2 = tss_next_1; 
-		tss_next_1 = *tss_aux;
-		actual = array_tareas->sig->num_tarea;
-	}
+
+//(1) tengo que tocar el free
+//(2) cual es la siguiente tarea a ejecutar, puede ser la idle?, no! esta se llama desde otro lado!
+//(3) copiar las cosas en la free, las cosas es la tarea a la que quiero saltar
+//(4) guardarme en algun lado que puse a correr esa tarea!
+
+	if (array_tareas != 0){ // chequeo si no hay mas tareas para ejecutar
+		tss* tss_aux;
+		tss_aux = buscar_contexto_tarea(TAREA_ACTUAL);	// 1er paso
+		TAREA_ACTUAL = array_tareas->sig->num_tarea;
 	
-	sel_tarea.offset = 0;
-	sel_tarea.selector = tss_busy * 0x8;	
+		if (tss_free == 16) 	//La tarea que se estaba corriendo es la 15 en la gdt
+			tss_copy(&tss_next_2, tss_aux);
+		else					//La tarea que se estaba corriendo es la 16 en la gdt
+			tss_copy(&tss_next_1, tss_aux);
+		
+		array_tareas = array_tareas->sig;
+	
+	}else
+		TAREA_ACTUAL = 0; // TAREA_ACTUAL = 0 == idle
 }
 
 //b)
 unsigned short sched_proximo_indice() {
+	sched_guardar_contexto(tss_free);
+	sched_cargar_sig_tarea(tss_free); //cambie NODO Por ARRAY_TAREAS
+
 	if (tss_busy == 15){
 		tss_busy = 16;
 		tss_free = 15;}
 	else{
 		tss_busy = 15;
 		tss_free = 16;}
-	////ya se a que tarea guardarle el contexto
-	sched_guardar_contexto(tss_busy);
-	sched_cargar_sig_tarea(); //cambie NODO Por ARRAY_TAREAS
-//	breakpoint();
-	if (array_tareas->sig != 0) // chequeo si no hay mas tareas para ejecutar
-		actual = array_tareas->sig->num_tarea; // si hay, ejecuto la proxima
-	else						// si no hay, ejecuto la idle que tiene id = 8
-		actual = 8;
-	return 0; 
+
+	return (tss_busy << 3); // Devuelvo el indice (shifteado) de la gdt de la prox tarea a ser ejecutada (con privilegio 3) 
 }
