@@ -92,8 +92,8 @@ _isr32:
     CALL proximo_reloj
 ;    xchg bx, bx
     CALL sched_proximo_indice
-    xchg bx, bx
     mov [sched_tarea_selector], ax
+    xchg bx, bx
     jmp far [sched_tarea_offset]
   ;  jmp 15*(0x8):0x0
     POPAD
@@ -125,7 +125,7 @@ _isr52:
     PUSHA
 
     MOV EAX, 0x42
-    xchg bx, bx
+    ;xchg bx, bx
     POPA
  ;   STI
     IRET

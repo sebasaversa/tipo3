@@ -25,14 +25,14 @@ void tss_inicializar_tarea_idle()
 	tss_next_1.eflags 	= (unsigned int)0x0000202;
 	tss_next_1.ebp 		= 0x27000;
 	tss_next_1.esp 		= 0x27000;
-    tss_next_1.cs 		= 9*(0x8);
-	tss_next_1.es 		= 11*(0x8);
-    tss_next_1.ss 		= 11*(0x8);
-    tss_next_1.ds 		= 11*(0x8);
-    tss_next_1.fs 		= 11*(0x8);
-    tss_next_1.gs 		= 11*(0x8);
+    tss_next_1.cs 		= GDT_IDX_CODE_DESC_0*(0x8);
+	tss_next_1.es 		= GDT_IDX_DATA_DESC_0*(0x8);
+    tss_next_1.ss 		= GDT_IDX_DATA_DESC_0*(0x8);
+    tss_next_1.ds 		= GDT_IDX_DATA_DESC_0*(0x8);
+    tss_next_1.fs 		= GDT_IDX_DATA_DESC_0*(0x8);
+    tss_next_1.gs 		= GDT_IDX_DATA_DESC_0*(0x8);
     tss_next_1.esp0		= tss_next_1.esp;
-    tss_next_1.ss0		= 11*(0x8);
+    tss_next_1.ss0		= GDT_IDX_DATA_DESC_0*(0x8);
 
     tss_next_2 = tss_next_1;
 }
@@ -60,30 +60,32 @@ void tss_inicializar_tareas_tanques()
 		tss_tanques[i].esp0 = (unsigned int) (area_libre + 0x0FFF);
 		dameMemoriaKPaginas(1);
 		//inicializar los selectores de segmento 
-	    tss_tanques[i].cs 		= 10*(0x8);
-		tss_tanques[i].es 		= 12*(0x8);
-		tss_tanques[i].ss 		= 12*(0x8);
-		tss_tanques[i].ds 		= 12*(0x8);
-		tss_tanques[i].fs 		= 12*(0x8);
-		tss_tanques[i].gs 		= 12*(0x8);
+	    tss_tanques[i].cs 		= GDT_IDX_CODE_DESC_3*(0x8);
+		tss_tanques[i].es 		= GDT_IDX_DATA_DESC_3*(0x8);
+		tss_tanques[i].ss 		= GDT_IDX_DATA_DESC_3*(0x8);
+		tss_tanques[i].ds 		= GDT_IDX_DATA_DESC_3*(0x8);
+		tss_tanques[i].fs 		= GDT_IDX_DATA_DESC_3*(0x8);
+		tss_tanques[i].gs 		= GDT_IDX_DATA_DESC_3*(0x8);
+		tss_tanques[i].esp0		= (unsigned int) &tss_idle.esp0;
+   		tss_tanques[i].ss0		= GDT_IDX_DATA_DESC_0*(0x8);
 
-		array_tareas->sig 		= 0;
-		array_tareas->ant 		= 0;
+		//array_tareas->sig 		= 0;
+		//array_tareas->ant 		= 0;
 		array_tareas->tarea 	= &tss_tanques[i];
-		array_tareas->num_tarea	= i;
+		array_tareas->num_tarea	= i+1;
 		
-		if (i < 7){
+		if (i < CANT_TANQUES - 1){ // creo el proximo nodo del struct de tss
 			nodo* nodo_sig = 0;
-			nodo_sig->sig = 0;
+			//nodo_sig->sig = 0;
 			nodo_sig->ant = array_tareas;
-			nodo_sig->tarea = 0;
-			nodo_sig->num_tarea = 0;
+			//nodo_sig->tarea = 0;
+			//nodo_sig->num_tarea = 0;
 			array_tareas->sig = nodo_sig;
 			array_tareas = array_tareas->sig;
 		}
 	}
 
-	// Ahora estoy en la ultima tarea de la lista doblemente enlazada
+	// Ahora estoy en el ultimo nodo de la lista doblemente enlazada y lo enlazo al primero
 	array_tareas->sig = array_tareas_prim;
 	array_tareas_prim->ant = array_tareas;
 	array_tareas = array_tareas_prim;
